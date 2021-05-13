@@ -39,21 +39,21 @@
 
 <body class="mt-0 mb-0 pt-0 pb-0">
 
-  <?php include "view/header.php";?>
+  <?php include "view/header.php"; ?>
 
   <main>
 
+
+
     <div id="carousel_1" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carousel_1" data-bs-slide-to="0" class="active" aria-current="true"
-          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carousel_1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carousel_1" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button type="button" data-bs-target="#carousel_1" data-bs-slide-to="2" aria-label="Slide 3"></button>
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
           </svg>
 
@@ -66,8 +66,7 @@
           </div>
         </div>
         <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
           </svg>
 
@@ -80,8 +79,7 @@
           </div>
         </div>
         <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
           </svg>
 
@@ -112,9 +110,7 @@
 
       <div class="row featurette">
         <div class="col-md-4 order-md-1">
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="400"
-            height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
-            preserveAspectRatio="xMidYMid slice" focusable="false">
+          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="400" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">400x400</text>
           </svg>
@@ -153,11 +149,9 @@
         <div class="row w-75 m-auto row-cols-1 row-cols-sm-2 row-cols-md-2 g-2">
           <div class="col">
             <div class="card shadow-sm h-100">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
-                role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                  dy=".3em">Thumbnail</text>
+                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
               </svg>
               <div class="card-body d-flex flex-column">
                 <h3 class="text-info py-2">Uniformes Profissionais</h3>
@@ -171,11 +165,9 @@
           </div>
           <div class="col">
             <div class="card shadow-sm h-100">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
-                role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                  dy=".3em">Thumbnail</text>
+                <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
               </svg>
               <div class="card-body d-flex flex-column">
                 <h3 class="text-info py-2">Uniformes Executivos</h3>
@@ -195,7 +187,7 @@
       <h1 class="py-5 text-white">Qualidade e inovação em nossos serviços e produtos.</h1>
     </div>
 
-    
+
 
     <!-- CÍRCULOS DE PARCEIROS -->
 
@@ -209,20 +201,18 @@
 
       <div class="row py-5">
         <div class="col-lg-4">
-          
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg"
-            role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
           </svg>
           <h4 class="py-2">Heading</h4>
 
-         
+
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg"
-            role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
           </svg>
@@ -230,9 +220,8 @@
 
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg"
-            role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
+
+          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
           </svg>
@@ -290,11 +279,33 @@
       <hr class="mt-5 mb-5">
     </div>
 
+    <!---->
+    <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
+      <div class="row">
+        <div class="col-11">
+
+          We use cookies on this website to distinguish you from other users. We use this data to enhance your experience and for targeted advertising. &nbsp; By continuing to use this website you consent to our use of cookies. &nbsp; For more information, please see our &nbsp;
+          <a href="https://info.profilesonly.com" target="_blank">Cookie Policy</a>.
+          <br>
+        </div>
+        <div class="col-1">
+          <button type="button" class="btn w-100 btn-sm btn-info">Aceitar</button>
+
+          <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!---->
+
   </main>
 
   <!-- FOOTER -->
-  <?php include "view/footer.php";?>
+  <?php include "view/footer.php"; ?>
 
+  <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 
