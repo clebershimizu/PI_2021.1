@@ -15,7 +15,7 @@
   <!-- CSS para ícones -->
   <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
+  <!-- CSS do Carousel -->
   <link href="lib/bootstrap/dist/css/carousel.css" rel="stylesheet">
 
   <!-- CSS temporário para os placeholders (imagens em cinza) -->
@@ -43,7 +43,33 @@
 
   <main>
 
+    <!-- POPUP CLEBER -->
+    <div class="container-fluid fixed-bottom">
+      <div class="row justify-content-end">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 text-white p-4" style="background-color: #091a3ddd;">
 
+          <div class="row">
+            <!--Título e botão X-->
+            <div class="col w-100">
+              <!--coluna que ocupa todo o comprimento disponivel-->
+              <h2>Utilizamos cookies</h2>
+            </div>
+            <div class="col-auto">
+              <!--coluna que se ajusta ao comprimento disponivel-->
+              <button class="btn-close btn-close-white"></button>
+            </div>
+          </div>
+
+          <!-- Corpo do popup -->
+          <p><small> Utilizamos cookies para melhorar sua navegação. Para mais informações,
+            visite nossa página de Política de Privacidade.</small>
+          </p>
+          <button type="button" name="acceptButton" class="btn btn-success w-100 mb-2">Aceitar cookies</button>
+          <button type="button" name="privacyButton" class="btn btn-secondary w-100">Política de privacidade</button>
+        </div>
+      </div>
+    </div>
+    <!-- FIM DO POPUP -->
 
     <div id="carousel_1" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
@@ -279,7 +305,7 @@
       <hr class="mt-5 mb-5">
     </div>
 
-    <!---->
+    <!--POP UP DE COOKIES
     <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
       <div class="row">
         <div class="col-11">
@@ -298,14 +324,13 @@
       </div>
     </div>
     </div>
-    <!---->
+    -->
 
   </main>
 
   <!-- FOOTER -->
   <?php include "view/footer.php"; ?>
 
-  <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 
