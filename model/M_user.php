@@ -1,17 +1,17 @@
 <?php
 
 require_once "../lib/crypto.php";
-require_once "../lib/sanitize.php";
+
 class User
 {
-    public $id;
-    public $name;
-    public $email;
-    public $password;
-    public $cpf_cnpj;
-    public $cep;
-    public $number;
-    public $complement;
+    private $id;
+    private $name;
+    private $email;
+    private $password;
+    private $cnpj_cpf;
+    private $cep;
+    private $number;
+    private $complement;
 
     //GETS E SETS
     //ID
@@ -31,8 +31,9 @@ class User
     }
     function setName($name)
     {
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $this->name = $name;
+        $s_name = filter_var($name, FILTER_SANITIZE_STRING);
+        if (!$s_name) throw new Exception('Valor para Nome inválido.');
+        $this->name = aes_256("encrypt", $s_name);
     }
 
     //EMAIL
@@ -42,8 +43,9 @@ class User
     }
     function setEmail($email)
     {
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        $this->email = crypto($email);
+        $s_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        if (!$s_email) throw new Exception('Email Inválido.');
+        $this->email = aes_256("encrypt", $s_email);
     }
 
     //SENHA
@@ -53,19 +55,19 @@ class User
     }
     function setPassword($password)
     {
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
-        $this->password = crypto($password);
+        $this->password = sha3_256($password);
     }
 
     //CPF_CNPJ
-    function getCPF_CNPJ()
+    function getCNPJ_CPF()
     {
-        return $this->cpf_cnpj;
+        return $this->cnpj_cpf;
     }
-    function setCPF_CNPJ($cpf_cnpj)
+    function setCNPJ_CPF($cnpj_cpf)
     {
-        $cpf_cnpj = filter_var($cpf_cnpj, FILTER_SANITIZE_STRING);
-        $this->cpf_cnpj = crypto($cpf_cnpj);
+        $s_cnpj_cpf = filter_var($cnpj_cpf, FILTER_SANITIZE_NUMBER_INT);
+        if (!$s_cnpj_cpf) throw new Exception('CNPJ/CPF inválido.');
+        $this->cnpj_cpf = aes_256("encrypt", $s_cnpj_cpf);
     }
 
     //CEP
@@ -75,8 +77,9 @@ class User
     }
     function setCEP($cep)
     {
-        $cep = filter_var($cep, FILTER_SANITIZE_STRING);
-        $this->cep = crypto($cep);
+        $s_cep = filter_var($cep, FILTER_SANITIZE_NUMBER_INT);
+        if (!$s_cep) throw new Exception('CEP inválido.');
+        $this->cep = aes_256("encrypt", $s_cep);
     }
 
     //NUMBER
@@ -86,8 +89,9 @@ class User
     }
     function setNumber($number)
     {
-        $number = filter_var($number, FILTER_SANITIZE_STRING);
-        $this->number = crypto($number);
+        $s_number = filter_var($number, FILTER_SANITIZE_NUMBER_INT);
+        if (!$s_number) throw new Exception('Valor para Número inválido.');
+        $this->number = aes_256("encrypt", $s_number);
     }
 
     //COMPLEMENT
@@ -97,8 +101,9 @@ class User
     }
     function setComplement($complement)
     {
-        $complement = filter_var($complement, FILTER_SANITIZE_STRING);
-        $this->complement = crypto($complement);
+        $s_complement = filter_var($complement, FILTER_SANITIZE_STRING);
+        if (!$s_complement) throw new Exception('Valor para Complemento inválido.');
+        $this->complement = aes_256("encrypt", $s_complement);
     }
 
     //DEMAIS MÉTODOS DO USUÁRIO
@@ -107,24 +112,22 @@ class User
     function registerUser($conn)
     {
         $query = "INSERT INTO user (name, email, user_password, cnpj_cpf, cep, house_number, complement)
-                VALUES (?, ?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCPF_CNPJ(), $this->getCEP(), $this->getNumber(), $this->getComplement());
+        @$stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement());
         $stmt->execute();
     }
+
     //FUNÇÃO PARA VERIFICAR LOGIN
     function searchLogin($conn)
     {
         require_once '../lib/crypto.php';
-        $h_Email = crypto($this->getEmail());
-        $h_Password = crypto($this->getPassword());
-        $query = 'SELECT * FROM user WHERE email LIKE ? AND passcode LIKE ? LIMIT 1';
+        $query = 'SELECT * FROM user WHERE email LIKE ? AND user_password LIKE ? LIMIT 1';
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $$h_Email, $h_Password);
+        @$stmt->bind_param("ss", $this->getEmail(), $this->getPassword());
         $stmt->execute();
         $search = $stmt->get_result();
-        $user = $search->fetch_assoc();
-        return $user;
+        return $search;
     }
 }

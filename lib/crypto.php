@@ -6,7 +6,7 @@ function sha3_256($value)
 }
 
 
-function encrypt_decrypt($action, $string)
+function aes_256($action, $string)
 {
     $output = false;
     $encrypt_method = "AES-256-CBC";
