@@ -33,6 +33,12 @@
         font-size: 3.5rem;
       }
     }
+
+    .img-carousel {
+        width: 100%;
+        /* height: 30.5vh; */
+        object-fit: cover;
+    }
   </style>
 
 </head>
@@ -79,9 +85,10 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <img src="img/carousel2.png" alt="" class="img-carousel">
+          <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
-          </svg>
+          </svg> -->
 
           <div class="container">
             <div class="carousel-caption">
@@ -215,7 +222,7 @@
 
 
 
-    <!-- CÍRCULOS DE PARCEIROS -->
+    <!-- QUADRADOS DE PARCEIROS -->
 
     <div class="text-center">
       <h2>Parceiros</h2>
