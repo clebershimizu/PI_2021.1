@@ -35,9 +35,9 @@
     }
 
     .img-carousel {
-        /*height: 100%;*/
-        height: 30.5vh;
-        object-fit: contain;
+      /*height: 100%;*/
+      height: 30.5vh;
+      object-fit: contain;
     }
   </style>
 
@@ -59,7 +59,7 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="img/loja1.gif" alt="" class="img-carousel"/>
+          <img src="img/loja1.gif" alt="" class="img-carousel" />
           <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
           </svg> -->
@@ -181,20 +181,20 @@
       <div class="row py-5">
         <div class="col-lg-4">
 
-          <img class="bd-placeholder-img " width="180" height="180" src="img/logo2.png"/>
-                    
+          <img class="bd-placeholder-img " width="180" height="180" src="img/logo2.png" />
 
-
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-        <img class="bd-placeholder-img " width="180" height="180" src="img/logo3.jpeg"/>
 
 
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-        <img class="bd-placeholder-img " width="180" height="180" src="img/logo-s.png"/>
+          <img class="bd-placeholder-img " width="180" height="180" src="img/logo3.jpeg" />
 
-        
+
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="bd-placeholder-img " width="180" height="180" src="img/logo-s.png" />
+
+
 
         </div><!-- /.col-lg-4 -->
       </div><!-- /.ROW DE PARCEIROS -->
