@@ -12,19 +12,27 @@
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Sobre</a>
+              <a class="nav-link" href="#sobre">Sobre</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Serviços</a>
+              <a class="nav-link" href="#servicos">Serviços</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Produtos</a>
+              <a class="nav-link" href="#parceiros">Parceiros</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contato</a>
+              <a class="nav-link" href="#contato">Contato</a>
             </li>
-            <li class="nav-item">
+            
+            <!-- <li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Localização</a>
+            </li> -->
+
+            <li class="nav-item">
+              <a class="nav-link" href="userLogin.php">Entrar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="userRegister.php">Cadastrar</a>
             </li>
           </ul>
         </div>

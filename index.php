@@ -35,9 +35,9 @@
     }
 
     .img-carousel {
-        width: 100%;
-        /* height: 30.5vh; */
-        object-fit: cover;
+        /*height: 100%;*/
+        height: 30.5vh;
+        object-fit: contain;
     }
   </style>
 
@@ -59,44 +59,16 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="img/carousel2.png" alt="" class="img-carousel">
+          <img src="img/loja1.gif" alt="" class="img-carousel"/>
           <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
             <rect width="100%" height="100%" fill="#777" />
           </svg> -->
-
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>GMS Uniformes</h1>
-              <hr>
-              <p>Excelência e qualidade em nossos uniformes!</p>
-            </div>
-          </div>
         </div>
         <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <rect width="100%" height="100%" fill="#777" />
-          </svg>
-
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Uniformes Executivos.</h1>
-              <hr>
-              <p>Modelos exclusivos atendendo todas as áreas de sua empresa.</p>
-            </div>
-          </div>
+          <img src="img/loja1.gif" alt="" class="img-carousel" />
         </div>
         <div class="carousel-item">
-          <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <rect width="100%" height="100%" fill="#777" />
-          </svg>
-
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Uniformes Profissionais</h1>
-              <hr>
-              <p>Atendemos todos os tipos de segmentos empresariais.</p>
-            </div>
-          </div>
+          <img src="img/loja1.gif" alt="" class="img-carousel" />
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carousel_1" data-bs-slide="prev">
@@ -111,7 +83,7 @@
 
 
     <!-- SOBRE NÓS -->
-    <div class="container">
+    <div class="container" id="sobre">
 
       <hr class="featurette-divider">
 
@@ -140,7 +112,7 @@
 
     </div><!-- /SOBRE NÓS -->
 
-    <div class="container-fluid bg-info text-center py-5 mt-5 mb-5">
+    <div class="container-fluid bg-info text-center py-5 mt-5 mb-5" id="servicos">
       <p class="h1 text-white">Serviços</p>
     </div>
 
@@ -198,7 +170,7 @@
 
     <!-- QUADRADOS DE PARCEIROS -->
 
-    <div class="text-center">
+    <div class="text-center" id="parceiros">
       <h2>Parceiros</h2>
     </div>
 
@@ -209,36 +181,26 @@
       <div class="row py-5">
         <div class="col-lg-4">
 
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-          </svg>
-          <h4 class="py-2">Heading</h4>
+          <img class="bd-placeholder-img " width="180" height="180" src="img/logo2.png"/>
+                    
 
 
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
+        <img class="bd-placeholder-img " width="180" height="180" src="img/logo3.jpeg"/>
 
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-          </svg>
-          <h4 class="py-2">Heading</h4>
 
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
+        <img class="bd-placeholder-img " width="180" height="180" src="img/logo-s.png"/>
 
-          <svg class="bd-placeholder-img " width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
-          </svg>
-          <h4 class="py-2">Heading</h4>
+        
 
         </div><!-- /.col-lg-4 -->
       </div><!-- /.ROW DE PARCEIROS -->
     </div>
 
-    <div class="container w-75">
+    <div class="container w-75" id="contato">
 
       <h2 class="text-center">Contato</h2>
       <hr class="mb-4">
@@ -260,7 +222,7 @@
               </div>
             </div>
             <div class="form-floating mt-2">
-              <input type="password" class="form-control" id="senha" placeholder="Password">
+              <input type="text" class="form-control" id="senha" placeholder="Password">
               <label for="senha">Assunto</label>
             </div>
             <div class="form-floating mt-2">

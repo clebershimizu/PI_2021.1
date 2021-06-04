@@ -1,10 +1,12 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     require_once '../model/M_connection.php';
+    require_once '../model/M_user.php';
+    require_once '../lib/crypto.php';
+
     $dbConn = new Connection();
     $conn = $dbConn->connect();
 
-    require_once '../model/M_user.php';
     $user = new User();
     $user->setEmail($_POST["userEmail"]);
     $user->setPassword($_POST["userPassword"]);
