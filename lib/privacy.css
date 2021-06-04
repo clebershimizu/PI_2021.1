@@ -1,0 +1,35 @@
+.container{
+  display: flex-center;
+}
+h2 {
+  padding: 1.6em 0 1.6em 0; 
+}
+nav {
+  padding: 0 0 0.6em 0; 
+}
+.body{
+  background-color: #fbfdfd;
+  font-family: "Nunito";
+}
+.bg-custom{
+  background-color:#130f40;
+  opacity: 0.8;
+}
+.button-fixed{
+  bottom: 0;
+  position: fixed;
+  right: 0;
+  border-radius: 4px;
+}
+.fas{
+  cursor: pointer;
+  font-size: 24px;
+}
+.buttons-place{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 16px;
+}
+p{
+  font-size: 14px;
+}
