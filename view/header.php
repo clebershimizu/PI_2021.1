@@ -23,16 +23,16 @@ if (isset($_SESSION["loggedUser"])) {
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#sobre">Sobre</a>
+            <a class="nav-link" href="index.php#sobre">Sobre</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#servicos">Serviços</a>
+            <a class="nav-link" href="index.php#servicos">Serviços</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#parceiros">Parceiros</a>
+            <a class="nav-link" href="index.php#parceiros">Parceiros</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#contato">Contato</a>
+            <a class="nav-link" href="index.php#contato">Contato</a>
           </li>
 
           <!-- <li class="nav-item">
