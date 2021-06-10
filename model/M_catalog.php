@@ -1,7 +1,9 @@
 <?php
 
-class Catalog {
-    function getProducts($conn){
+class Catalog
+{
+    function getProdutos($conn)
+    {
         $query = 'SELECT * FROM produto';
         $stmt = $conn->prepare($query);
         $stmt->execute();
@@ -9,8 +11,9 @@ class Catalog {
         return $search;
     }
 
-    function getServices($conn){
-        $query = 'SELECT * FROM servico';
+    function getServicos($conn)
+    {
+        $query = 'SELECT * FROM servico_tamanho_preco';
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $search = $stmt->get_result();
