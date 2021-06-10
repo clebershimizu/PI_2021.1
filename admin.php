@@ -22,35 +22,6 @@ if (!isset($_SESSION['loggedAdmin'])) {
 <body>
 
     <h1>VISUALIZAR COTAÇÕES</h1>
-    <hr>
-
-
-    <h2>COTAÇÃO # xxxxxxxxx</h2>
-    <p>Cliente: xxxxxx</p>
-
-    <h3>PRODUTOS</h3>
-
-    <h4>Camiseta XXXXX</h4>
-    <p>Tamanho: G<br>
-        Cor: PRETO<br>
-        Costura: SIMPLES<br>
-        Quantidade: 25 br <br>
-        Preço Base: xx Reais
-    </p>
-
-    <h5>SERVIÇOS</h5>
-
-    <p>{Nome do Serviço}<br>
-        Tamanho: G (40cm) <br>
-        Custo: xx Reais <br>
-        Posição: Manga Direita <br>
-    </p>
-
-    <h4>PREÇO TOTAL: Preço Dinamico RS</h4>
-
-    <hr>
-
-    <!--  -->
 
     <?php
 
@@ -62,41 +33,67 @@ if (!isset($_SESSION['loggedAdmin'])) {
     $admin = new Admin();
     $cotacoes = $admin->getCotacoes($conn);
 
+
+    //LOOP DAS COTAÇÕES
     if ($cotacoes->num_rows > 0) {
 
         while ($cotacao = $cotacoes->fetch_assoc()) { ?>
 
+            <hr>
 
-            <h2>COTAÇÃO # xxxxxxxxx</h2>
-            <p>Cliente: xxxxxx</p>
+            <h2>COTAÇÃO # <?=$cotacao['id']?></h2>
+            <p>Cliente: <?=strtoupper(aes_256("decrypt", $cotacao['name']))?><br>
+               CNPJ_CPF: <?=aes_256("decrypt", $cotacao['cnpj_cpf'])?><br>
+               <br>
+               Preço Automático: R$ xxxx,xx <br>    
+               PREÇO ORÇADO: Cotação ainda não orçada.
+            </p>
+            
+            </h4>
 
-            <h3>PRODUTOS</h3>
 
-            <?php
-            $produtos = $admin->getProdutosDeCotacao($conn, $cotacao['id']);
-            while ($cotacao = $cotacoes->fetch_assoc()) {
-            ?>
+            <div id="produtos-<?=$cotacao['id']?>" style="margin-left:20px;">
+                <h3>PRODUTOS</h3>
 
-                <h4>Camiseta XXXXX</h4>
-                <p>Tamanho: G<br>
-                    Cor: PRETO<br>
-                    Costura: SIMPLES<br>
-                    Quantidade: 25 br <br>
-                    Preço Base: xx Reais
-                </p>
+                <?php
 
-                <h5>SERVIÇOS</h5>
+                //LOOP DOS PRODUTOS
 
-                <p>{Nome do Serviço}<br>
-                    Tamanho: G (40cm) <br>
-                    Custo: xx Reais <br>
-                    Posição: Manga Direita <br>
-                </p>
+                $produtos = $admin->getProdutosDeCotacao($conn, $cotacao['id']);
+                while ($produto = $produtos->fetch_assoc()) {
+                ?>
 
-            <?php } // FIM DO LOOP DOS PRODUTOS 
-            ?>
+                    <p><b><?=$produto['tipo_peca']?></b><br>
+                        Tamanho: <?=$produto['tamanho']?><br>
+                        Cor: <?=$produto['cor']?><br>
+                        Costura: <?=$produto['costura']?><br>
+                        Quantidade: <?=$produto['qtde_produtos']?><br>
+                        Preço Base: R$ <?=$produto['base_cost']?>
+                    </p>
 
-            <h4>PREÇO TOTAL: Preço Dinamico RS</h4>
+                    <?php
+
+                    //LOOP DOS SERVIÇOS
+                    
+                    $servicos = $admin->getServicosDeProduto($conn, $produto['id']);
+                    while ($servico = $servicos->fetch_assoc()) {
+                    ?>
+                        <div id="prod-<?=$produto['id']?>-serv-<?=$servico['id']?>" style="margin-left:20px;">
+                            <p><b>Serviço: <?=$servico['desc']?></b><br>
+                                Tamanho: <?=$servico['tamanho']?> (<?=$servico['desc_tamanho']?>) <br>
+                                Custo: R$ <?=$servico['preco']?> <br>
+                                Posição: <?=$servico['posicao']?> <br>
+                                Comentários: <?=$servico['comment']?>
+                            </p>
+                        </div>
+
+                    <?php } // FIM DO LOOP DOS SERVIÇOS 
+                    ?>
+
+                <?php } // FIM DO LOOP DOS PRODUTOS 
+                ?>
+
+            </div>
 
     <?php } //FIM DO LOOP DAS COTAÇÕES 
 
