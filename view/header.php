@@ -47,7 +47,7 @@ if (isset($_SESSION["loggedUser"])) {
             </li>
           <?php } else { ?>
             <li class="nav-item">
-              <a class="nav-link" href="profile.php?id=<?= $loggedUserId ?>">Bem Vindo(a), <?= $loggedUserName ?></a>
+              <a class="nav-link" href="userAccount.php">Bem Vindo(a), <?= $loggedUserName ?></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="control/C_logoutUser.php">Logout</a>

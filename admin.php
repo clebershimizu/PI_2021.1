@@ -21,7 +21,7 @@ if (!isset($_SESSION['loggedAdmin'])) {
 
 <body>
 
-    <h1>VISUALIZAR COTAÇÕES</h1>
+    <h1>COTAÇÕES - ORÇAMENTOS PENDENTES</h1>
 
     <?php
 
@@ -30,55 +30,75 @@ if (!isset($_SESSION['loggedAdmin'])) {
     $conn = $dbConn->connect();
 
     require_once 'model/M_admin.php';
+    require_once 'model/M_pedido.php';
     $admin = new Admin();
-    $cotacoes = $admin->getCotacoes($conn);
+
+    //ESTA É A FORMA DE CHAMAR UM MÉTODO ESTÁTICO
+    $pedidos = Pedido::getPedidosNaoOrcados($conn);
 
 
     //LOOP DAS COTAÇÕES
-    if ($cotacoes->num_rows > 0) {
+    if ($pedidos) {
 
-        while ($cotacao = $cotacoes->fetch_assoc()) { ?>
+        foreach($pedidos as $pedido) { 
+
+            $idPedido = $pedido->getId();
+            $cliente = mb_strtoupper(aes_256("decrypt", ($pedido->getUser())->getName()), 'UTF-8');
+            $cnpj_cpf = aes_256("decrypt", ($pedido->getUser())->getCnpj_cpf());
+            $precoAuto = number_format($pedido->computarTotal($conn), 2, ',', '.');
+            ?>
 
             <hr>
 
-            <h2>COTAÇÃO # <?=$cotacao['id']?></h2>
-            <p>Cliente: <?=strtoupper(aes_256("decrypt", $cotacao['name']))?><br>
-               CNPJ_CPF: <?=aes_256("decrypt", $cotacao['cnpj_cpf'])?><br>
+            <h2>COTAÇÃO # <?=$idPedido?></h2>
+            <p>Cliente: <?=$cliente?><br>
+               CNPJ_CPF: <?=$cnpj_cpf?><br>
                <br>
-               Preço Automático: R$ xxxx,xx <br>    
+               Preço Automático: R$ <?=$precoAuto?> <br>    
                PREÇO ORÇADO: Cotação ainda não orçada.
             </p>
             
             </h4>
 
 
-            <div id="produtos-<?=$cotacao['id']?>" style="margin-left:20px;">
+            <div id="produtos-<?=$pedido->getId()?>" style="margin-left:20px;">
                 <h3>PRODUTOS</h3>
 
                 <?php
 
                 //LOOP DOS PRODUTOS
 
-                $produtos = $admin->getProdutosDeCotacao($conn, $cotacao['id']);
-                while ($produto = $produtos->fetch_assoc()) {
-                ?>
+                $produtos = $pedido->getProdutos($conn);
+                //Aqui são PEDIDO_PRODUTOS... extensão de apenas PRODUTOS. (conferir M_product.php)
 
-                    <p><b><?=$produto['tipo_peca']?></b><br>
-                        Tamanho: <?=$produto['tamanho']?><br>
-                        Cor: <?=$produto['cor']?><br>
-                        Costura: <?=$produto['costura']?><br>
-                        Quantidade: <?=$produto['qtde_produtos']?><br>
-                        Preço Base: R$ <?=$produto['base_cost']?>
+                foreach ($produtos as $prod) {
+
+                    $peca = $prod->getTipoPeca();
+                    $tecido = mb_strtoupper($prod->getTecido(), 'UTF-8');
+                    $tamanho = $prod->getTamanho();
+                    $mod_t = $prod->getModTamanho();
+                    $cor = $prod->getCor();
+                    $costura = $prod->getCostura();
+                    $mod_c = $prod->getModCostura();
+                    $qtde = $prod->getQtdeProdutos();
+                    $base_cost = $prod->getBaseCost();
+                ?>
+                    <p><b><?=$peca?></b><br>
+                        Tecido: <?=$tecido?><br>
+                        Tamanho: <?=$tamanho?> <small>(x<?=$mod_t?>)</small><br>
+                        Cor: <?=$cor?><br>
+                        Costura: <?=$costura?> <small>(x<?=$mod_c?>)</small><br>
+                        Quantidade: <?=$qtde?><br>
+                        Preço Base: R$ <?=$base_cost?>
                     </p>
 
                     <?php
-
                     //LOOP DOS SERVIÇOS
                     
-                    $servicos = $admin->getServicosDeProduto($conn, $produto['id']);
+                    $servicos = $prod->getServicos($conn);
                     while ($servico = $servicos->fetch_assoc()) {
                     ?>
-                        <div id="prod-<?=$produto['id']?>-serv-<?=$servico['id']?>" style="margin-left:20px;">
+                        <div id="prod-<?=$prod->getIdPedidoProduto()?>-serv-<?=$servico['id']?>" style="margin-left:20px;">
                             <p><b>Serviço: <?=$servico['desc']?></b><br>
                                 Tamanho: <?=$servico['tamanho']?> (<?=$servico['desc_tamanho']?>) <br>
                                 Custo: R$ <?=$servico['preco']?> <br>

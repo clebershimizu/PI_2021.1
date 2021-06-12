@@ -1,6 +1,7 @@
 <?php
 
-require_once "../lib/crypto.php";
+    $docroot = $_SERVER['DOCUMENT_ROOT'];
+    require_once "{$docroot}/PI_2021.1/lib/crypto.php";
 
 class User
 {
@@ -12,6 +13,35 @@ class User
     private $cep;
     private $number;
     private $complement;
+
+    //TIPO UM CONSTRUTOR, QUE RECEBE UM ID, já monta um usuário
+    //PORQUE NAO USAR CONSTRUTOR? Php não aceita overload... ótimo.
+    function preencher($conn, $id)
+    {
+        //BUSCA O USUARIO DO BANCO
+        $query =   'SELECT * FROM user WHERE id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0){
+            $user = $result->fetch_assoc();
+
+            //PREENCHE O OBJETO - tudo vem criptografado
+            $this->id = $user['id'];
+            $this->name = $user['name'];
+            $this->email = $user['email'];
+            $this->password = $user['user_password'];
+            $this->cnpj_cpf = $user['cnpj_cpf'];
+            $this->cep = $user['cep'];
+            $this->number = $user['house_number'];
+            $this->complement = $user['complement'];
+            
+        }else{
+            return 0;
+        }
+    }
 
     //GETS E SETS
     //ID
@@ -129,5 +159,15 @@ class User
         $stmt->execute();
         $search = $stmt->get_result();
         return $search;
+    }
+
+    function updateUserData($conn)
+    {
+        $query =    "UPDATE user SET name = ?, email = ?, user_password = ?, cnpj_cpf = ?, house_number = ?, complement = ?
+                    WHERE id = ?";
+
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement());
+        $stmt->execute();
     }
 }
