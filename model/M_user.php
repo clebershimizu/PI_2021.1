@@ -1,7 +1,7 @@
 <?php
 
-    $docroot = $_SERVER['DOCUMENT_ROOT'];
-    require_once "{$docroot}/PI_2021.1/lib/crypto.php";
+$docroot = $_SERVER['DOCUMENT_ROOT'];
+require_once "{$docroot}/PI_2021.1/lib/crypto.php";
 
 class User
 {
@@ -15,7 +15,7 @@ class User
     private $complement;
 
     //TIPO UM CONSTRUTOR, QUE RECEBE UM ID, já monta um usuário
-    //PORQUE NAO USAR CONSTRUTOR? Php não aceita overload... ótimo.
+    //PORQUE NAO USAR CONSTRUTOR? Php não aceita overload... ótimo. Comentario do Leandro: KKKKKKKKKKKKKKKKKKKKKKKKK
     function preencher($conn, $id)
     {
         //BUSCA O USUARIO DO BANCO
@@ -25,7 +25,7 @@ class User
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
             //PREENCHE O OBJETO - tudo vem criptografado
@@ -37,8 +37,7 @@ class User
             $this->cep = $user['cep'];
             $this->number = $user['house_number'];
             $this->complement = $user['complement'];
-            
-        }else{
+        } else {
             return 0;
         }
     }
@@ -161,13 +160,32 @@ class User
         return $search;
     }
 
-    function updateUserData($conn)
+    function updateUserData($conn, $id)
     {
-        $query =    "UPDATE user SET name = ?, email = ?, user_password = ?, cnpj_cpf = ?, house_number = ?, complement = ?
-                    WHERE id = ?";
-
+        $query =    "SELECT * FROM pedido WHERE fk_user_id = ?";
         $stmt = $conn->prepare($query);
-        @$stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement());
+        @$stmt->bind_param("i", $id);
         $stmt->execute();
+        $ordersCheck = $stmt->get_result();
+
+        if ($ordersCheck->num_rows > 0) {
+            $query =    "SELECT cnpj_cpf FROM user WHERE id = ? LIMIT 1";
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("i", $id);
+            $stmt->execute();
+            $cnpj_cpfCheck = $stmt->get_result();
+            $cnpj_cpfCheck = $cnpj_cpfCheck->fetch_assoc();
+        }
+
+        if ($cnpj_cpfCheck["cnpj_cpf"] = $this->cnpj_cpf) {
+            $query =    "UPDATE user SET name = ?, email = ?, user_password = ?, cnpj_cpf = ?, house_number = ?, complement = ?
+            WHERE id = ?";
+
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("sssssssi", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement(), $id);
+            $stmt->execute();
+        } else {
+            return 0;
+        }
     }
 }

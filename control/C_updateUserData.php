@@ -3,7 +3,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     require_once '../model/M_connection.php';
     $dbConn = new Connection();
-    $conn = $dbConn->connect(); 
+    $conn = $dbConn->connect();
 
     $id = $_SESSION["idUser"];
 
@@ -23,6 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         header("Location: ../userLogin.php");
     } catch (Exception $e) {
         $msg = $e->getMessage();
-        header("Location: ../userRegister.php?erro={$msg}");
+        header("Location: ../userAccount.php?erro={$msg}");
     }
 }

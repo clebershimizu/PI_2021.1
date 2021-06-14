@@ -1,3 +1,26 @@
+<?php
+
+session_start();
+
+$docroot = $_SERVER['DOCUMENT_ROOT'];
+require_once "{$docroot}/PI_2021.1/lib/crypto.php";
+
+if ($_SESSION["loggedUser"]) {
+
+    require_once 'Model/M_connection.php';
+    $dbConn = new Connection();
+    $conn = $dbConn->connect();
+
+    require_once 'Model/M_user.php';
+    $user = new User();
+    $user->preencher($conn, $_SESSION["idUser"]);
+} else {
+    $msg = "Acesso Negado.";
+    header("Location: userLogin.php?erro={$msg}");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,138 +33,137 @@
     <title>Conta</title>
 
     <style>
-        
         .strength0 {
             height: 20px;
             width: 40px;
             background-color: #F55;
         }
 
-        .strength1{
+        .strength1 {
             height: 20px;
             width: 80px;
             background-color: #DF7401;
         }
 
-        .strength2{
+        .strength2 {
             height: 20px;
             width: 120px;
             background-color: #FFFF00;
         }
 
-        .strength3{
+        .strength3 {
             height: 20px;
             width: 160px;
-            background-color:#9AFE2E;
+            background-color: #9AFE2E;
         }
 
-        .strength4{
+        .strength4 {
             height: 20px;
             width: 200px;
-            background-color:#0B610B;
+            background-color: #0B610B;
         }
 
-        .strength5{
+        .strength5 {
             height: 20px;
             width: 240px;
-            background-color:#0B610F;
+            background-color: #0B610F;
         }
     </style>
-     
+
 </head>
 
 <body>
-<?php include "view/header.php"; ?>
+    <?php include "view/header.php"; ?>
 
-        <div class="form-signin">
-            <form action="control/C_registerUser" method="GET"> 
+    <div class="form-signin">
+        <form action="control/C_updateUserData" method="POST">
 
             <!-- Buscar pela id -->
-            
-                <h1 class="h1 mb-3 fw-normal">Olá 'user'! Seja bem-vindo.</h1>
-                <a href="index.php">Voltar</a>
-                <br>
-                <label for="name">Nome</label> <br>
-                <input type="text" name="name" class="form-control"><br>
-                <br>
 
-                <label for="email">Email</label><br>
-                <input type="email" name="email" class="form-control"><br>
-                <br>
+            <h1 class="h1 mb-3 fw-normal">Olá <?= $_SESSION["nameUser"] ?>! Seja bem-vindo.</h1>
+            <a href="index.php">Voltar</a>
+            <br>
+            <label for="name">Nome</label> <br>
+            <input type="text" name="name" class="form-control" value="<?= aes_256("decrypt", $user->getName()) ?>"><br>
+            <br>
 
-                <label for="password">Senha</label><br>
-                <input type="password" name="password" onkeyup="passwordStrength(this.value)" maxlength="30" minlength="8" class="form-control">
-                <span class="small">No mímino 8 caracteres. Procure usar maiúsculas, minúsculas, números e símbolos.</span>
-                <br>
-                <div id="passwordDescription">Nenhuma senha digitada</div>
-                <div id="passwordStrength" class="strength0"></div><br>
+            <label for="email">Email</label><br>
+            <input type="email" name="email" class="form-control" value="<?= aes_256("decrypt", $user->getEmail()) ?>"><br>
+            <br>
 
-                <label for="password-confirm">Repita a senha</label><br>
-                <input type="password" name="password-confirm" onkeyup="passwordMatch(this.value) maxlength="30" minlength="8" class="form-control"><br>
-                <br>
+            <!-- <label for="password">Senha</label><br>
+            <input type="password" name="password" onkeyup="passwordStrength(this.value)" maxlength="30" minlength="8" class="form-control">
+            <span class="small">No mímino 8 caracteres. Procure usar maiúsculas, minúsculas, números e símbolos.</span>
+            <br>
+            <div id="passwordDescription">Nenhuma senha digitada</div>
+            <div id="passwordStrength" class="strength0"></div><br>
 
-                <label for="cpf_cnpj">CNPJ_CPF</label><br>
-                <input type="text" name="cnpj_cpf" class="form-control"><br>
-                <br>
+            <label for="password-confirm">Repita a senha</label><br>
+            <input type="password" name="password-confirm" onkeyup="passwordMatch(this.value)" maxlength="30" minlength="8" class="form-control"><br>
+            <br> -->
 
-                <label for="cep">CEP</label><br>
-                <input type="text" name="cep" class="form-control"><br>
-                <br>
+            <label for="cpf_cnpj">CNPJ_CPF</label><br>
+            <input type="text" name="cnpj_cpf" class="form-control" value="<?= aes_256("decrypt", $user->getCNPJ_CPF()) ?>"><br>
+            <br>
 
-                <label for="address">Endereço</label><br>
-                <input type="text" name="address" class="form-control"><br>
-                <br>
+            <label for="cep">CEP</label><br>
+            <input type="text" name="cep" class="form-control" value="<?= aes_256("decrypt", $user->getCEP()) ?>"><br>
+            <br>
 
-                <label for="number">Número</label><br>
-                <input type="text" name="number" class="form-control"><br>
-                <br>
+            <!-- <label for="address">Endereço</label><br>
+            <input type="text" name="address" class="form-control"><br>
+            <br> -->
 
-                <label for="complement">Complemento</label><br>
-                <input type="text" name="complemento" class="form-control"><br>
-                <br>
+            <label for="number">Número</label><br>
+            <input type="text" name="number" class="form-control" value="<?= aes_256("decrypt", $user->getNumber()) ?>"><br>
+            <br>
 
-                <label for="city">Cidade</label><br>
-                <input type="text" name="city" class="form-control"><br>
-                <br>
+            <label for="complement">Complemento</label><br>
+            <input type="text" name="complemento" class="form-control" value="<?= aes_256("decrypt", $user->getComplement()) ?>"><br>
+            <br>
 
-                <label for="state">Estado</label><br>
-                <input type="text" name="state" class="form-control"><br>
-                <br>
+            <!-- <label for="city">Cidade</label><br>
+            <input type="text" name="city" class="form-control"><br>
+            <br>
 
-                <div class="checkbox mb-3">
+            <label for="state">Estado</label><br>
+            <input type="text" name="state" class="form-control"><br>
+            <br> -->
+
+            <div class="checkbox mb-3">
                 <label>
-                <input type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
+                    <input type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
                 </label>
-                </div>
+            </div>
 
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Atualizar cadastro</button>
-            </form>
-        </div>
-   
+            <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Atualizar cadastro</button> -->
+            <input class="w-100 btn btn-lg btn-primary" type="submit" value="Atualizar cadastro">
+        </form>
+    </div>
+
 
     <script>
-        function passwordStrength(password)
-        {
-        var desc = new Array();
-        desc[0] = "Muito Fraca";
-        desc[1] = "Muito Fraca";
-        desc[2] = "Fraca";
-        desc[3] = "Médio";
-        desc[4] = "Forte";
-        desc[5] = "Muito Forte";
-        var score   = 0;
-        //if password bigger than 8 give 1 point
-        if (password.length > 8) score++;
-        //if password has both lower and uppercase characters give 1 point  
-        if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) score++;
-        //if password has at least one number give 1 point
-        if (password.match(/\d+/)) score++;
-        //if password has at least one special caracther give 1 point
-        if ( password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/) ) score++;
-        //if password bigger than 12 give another 1 point
-        if (password.length > 12) score++;
-        document.getElementById("passwordDescription").innerHTML = desc[score];
-        document.getElementById("passwordStrength").className = "strength" + score;
+        function passwordStrength(password) {
+            var desc = new Array();
+            desc[0] = "Muito Fraca";
+            desc[1] = "Muito Fraca";
+            desc[2] = "Fraca";
+            desc[3] = "Médio";
+            desc[4] = "Forte";
+            desc[5] = "Muito Forte";
+            var score = 0;
+            //if password bigger than 8 give 1 point
+            if (password.length > 8) score++;
+            //if password has both lower and uppercase characters give 1 point  
+            if ((password.match(/[a-z]/)) && (password.match(/[A-Z]/))) score++;
+            //if password has at least one number give 1 point
+            if (password.match(/\d+/)) score++;
+            //if password has at least one special caracther give 1 point
+            if (password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/)) score++;
+            //if password bigger than 12 give another 1 point
+            if (password.length > 12) score++;
+            document.getElementById("passwordDescription").innerHTML = desc[score];
+            document.getElementById("passwordStrength").className = "strength" + score;
         }
     </script>
 
