@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="lib/bootstrap/dist/css/carousel.css" rel="stylesheet">
+    
 
     <!-- CSS temporário para os placeholders (imagens em cinza) -->
     <style>
