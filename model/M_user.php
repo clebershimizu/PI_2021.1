@@ -14,6 +14,15 @@ class User
     private $number;
     private $complement;
 
+    function __construct($conn, $name)
+    {
+        // roda alguma coisa
+    }
+
+    function __construct()
+    {
+    }
+
     //TIPO UM CONSTRUTOR, QUE RECEBE UM ID, já monta um usuário
     //PORQUE NAO USAR CONSTRUTOR? Php não aceita overload... ótimo. Comentario do Leandro: KKKKKKKKKKKKKKKKKKKKKKKKK
     function preencher($conn, $id)
@@ -175,6 +184,13 @@ class User
             $stmt->execute();
             $cnpj_cpfCheck = $stmt->get_result();
             $cnpj_cpfCheck = $cnpj_cpfCheck->fetch_assoc();
+        } else {
+            $query =    "UPDATE user SET name = ?, email = ?, user_password = ?, cnpj_cpf = ?, house_number = ?, complement = ?
+            WHERE id = ?";
+
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("sssssssi", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement(), $id);
+            $stmt->execute();
         }
 
         if ($cnpj_cpfCheck["cnpj_cpf"] = $this->cnpj_cpf) {
