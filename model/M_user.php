@@ -14,15 +14,6 @@ class User
     private $number;
     private $complement;
 
-    function __construct($conn, $name)
-    {
-        // roda alguma coisa
-    }
-
-    function __construct()
-    {
-    }
-
     //TIPO UM CONSTRUTOR, QUE RECEBE UM ID, já monta um usuário
     //PORQUE NAO USAR CONSTRUTOR? Php não aceita overload... ótimo. Comentario do Leandro: KKKKKKKKKKKKKKKKKKKKKKKKK
     function preencher($conn, $id)
