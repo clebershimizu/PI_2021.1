@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         session_start();
 
+        if (isset($_SESSION["loggedUser"])) {
+            unset($_SESSION["loggedUser"]);
+            unset($_SESSION["idUser"]);
+            unset($_SESSION["nameUser"]);
+        }
+
         $_SESSION["loggedAdmin"] = True;
         $_SESSION["idAdmin"]     = $user["id"];
 

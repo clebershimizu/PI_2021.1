@@ -2,54 +2,13 @@
 
 //ESTE ARQUIVO POSSUI DUAS CLASSES, PRODUTO E SUA EXTENSÃO, PEDIDO_PRODUTO.
 
-class Product {
+class Product
+{
     private $id_produto;
     private $base_cost;
     private $img_url;
     private $tecido;
     private $tipo_peca;
-
-    // GETS E SETS
-
-    //ID Produto
-    function setIdProduto($id){
-        $this->id_produto = $id;
-    }
-    function getIdProduto(){
-        return $this->id_produto;
-    }
-
-    //Base Cost
-    function setBaseCost($bc){
-        $this->base_cost = $bc;
-    }
-    function getBaseCost(){
-        return $this->base_cost;
-    }
-
-    //IMG URL
-    function setImgUrl($url){
-        $this->img_url = $url;
-    }
-    function getImgUrl(){
-        return $this->img_url;
-    }
-
-    //Tecido
-    function setTecido($tecido){
-        $this->tecido = $tecido;
-    }
-    function getTecido(){
-        return $this->tecido;
-    }
-
-    //Tipo Peca
-    function setTipoPeca($tp){
-        $this->tipo_peca = $tp;
-    }
-    function getTipoPeca(){
-        return $this->tipo_peca;
-    }
 
     //DEMAIS MÉTODOS
 
@@ -69,7 +28,101 @@ class Product {
         $this->setTecido($prod['tecido']);
         $this->setTipoPeca($prod['tipo_peca']);
     }
-    
+
+    public static function getProdutos($conn)
+    {
+
+        //Pegar todos os produtos cadastrados
+
+        $query = 'SELECT id FROM produto';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $produtos = $stmt->get_result();
+
+        if ($produtos->num_rows > 0) {
+
+            // PARA CADA PEDIDO NÃO ORÇADO:
+            // 1. Construir um Objeto de Pedido
+            // 2. Preencher este Objeto com infos de um ID já existente;
+            // 3. Anexar em Array, que será retornado
+
+            $array = [];
+
+            while ($produto = $produtos->fetch_assoc()) {
+                $prod = new Product();
+                $prod->preencherProduto($conn, $produto['id']);
+                array_push($array, $prod);
+            }
+
+            return $array;
+        } else {
+            return 0;
+        }
+    }
+
+    // GETS E SETS
+
+    //ID Produto
+    function setIdProduto($id)
+    {
+        $this->id_produto = $id;
+    }
+    function getIdProduto()
+    {
+        return $this->id_produto;
+    }
+
+    //Base Cost
+    function setBaseCost($bc)
+    {
+        $this->base_cost = $bc;
+    }
+    function getBaseCost()
+    {
+        return $this->base_cost;
+    }
+
+    //IMG URL
+    function setImgUrl($url)
+    {
+        $this->img_url = $url;
+    }
+    function getImgUrl()
+    {
+        return $this->img_url;
+    }
+
+    //Tecido
+    function setTecido($tecido)
+    {
+        $this->tecido = $tecido;
+    }
+    function getTecido()
+    {
+        return $this->tecido;
+    }
+
+    //Tipo Peca
+    function setTipoPeca($tp)
+    {
+        $this->tipo_peca = $tp;
+    }
+    function getTipoPeca()
+    {
+        return $this->tipo_peca;
+    }
+
+    //Posicoes
+    function getPosicoes($conn)
+    {
+        $query =   'SELECT * FROM posicao 
+                    WHERE id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->id_produto);
+        $stmt->execute();
+        $search = $stmt->get_result();
+        return $search;
+    }
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -96,31 +149,38 @@ class Pedido_Produto extends Product
     //GETS E SETS
 
     //PedidoProduto
-    function getIdPedidoProduto(){
+    function getIdPedidoProduto()
+    {
         return $this->id_pedido_produto;
     }
-    function setIdPedidoProduto($x){
+    function setIdPedidoProduto($x)
+    {
         $this->id_pedido_produto = $x;
     }
 
     //Pedido
-    function getIdPedido(){
+    function getIdPedido()
+    {
         return $this->id_pedido;
     }
-    function setIdPedido($x){
+    function setIdPedido($x)
+    {
         $this->id_pedido = $x;
     }
 
     //QTDE
-    function getQtdeProdutos(){
+    function getQtdeProdutos()
+    {
         return $this->qtde_produtos;
     }
-    function setQtdeProdutos($x){
+    function setQtdeProdutos($x)
+    {
         $this->qtde_produtos = $x;
     }
 
     //Costura
-       function setCostura($conn, $x){
+    function setCostura($conn, $x)
+    {
         $this->id_costura = $x;
 
         $query =   'SELECT c.desc, c.mod_preco FROM costura c
@@ -131,24 +191,28 @@ class Pedido_Produto extends Product
         @$stmt->bind_param("i", $this->id_pedido_produto);
         $stmt->execute();
         $search = $stmt->get_result();
-        $row = $search->fetch_assoc(); 
+        $row = $search->fetch_assoc();
 
         $this->costura = $row['desc'];
         $this->mod_costura = $row['mod_preco'];
     }
-    function getIdCostura(){
+    function getIdCostura()
+    {
         return $this->id_costura;
     }
-    function getCostura(){
+    function getCostura()
+    {
         return $this->costura;
     }
-    function getModCostura(){
+    function getModCostura()
+    {
         return $this->mod_costura;
     }
 
 
     //Cor
-    function setCor($conn, $x){
+    function setCor($conn, $x)
+    {
         $this->id_cor = $x;
 
         $query =   'SELECT c.desc FROM cor c
@@ -159,19 +223,22 @@ class Pedido_Produto extends Product
         @$stmt->bind_param("i", $this->id_pedido_produto);
         $stmt->execute();
         $search = $stmt->get_result();
-        $row = $search->fetch_assoc(); 
-        
+        $row = $search->fetch_assoc();
+
         $this->cor = $row['desc'];
     }
-    function getIdCor(){
+    function getIdCor()
+    {
         return $this->id_cor;
     }
-    function getCor(){
+    function getCor()
+    {
         return $this->cor;
     }
 
     //Tamanho
-    function setTamanho($conn, $x){
+    function setTamanho($conn, $x)
+    {
         $this->id_tamanho = $x;
 
         $query =   'SELECT t.desc, t.mod_preco FROM tamanho t
@@ -182,25 +249,28 @@ class Pedido_Produto extends Product
         @$stmt->bind_param("i", $this->id_pedido_produto);
         $stmt->execute();
         $search = $stmt->get_result();
-        $row = $search->fetch_assoc(); 
-        
+        $row = $search->fetch_assoc();
+
         $this->tamanho = $row['desc'];
         $this->mod_tamanho = $row['mod_preco'];
     }
-    function getIdTamanho(){
+    function getIdTamanho()
+    {
         return $this->id_tamanho;
     }
-    function getTamanho(){
+    function getTamanho()
+    {
         return $this->tamanho;
     }
-    function getModTamanho(){
+    function getModTamanho()
+    {
         return $this->mod_tamanho;
     }
 
     //=-=-=-=-=- DEMAIS MÉTODOS =-=-=-=-=-=
 
     function preencherPedidoProduto($conn, $id_pp)
-    { 
+    {
 
         //Buscar tudo do parâmetro
         $query =   'SELECT * FROM pedido_produto WHERE id = ?';
@@ -225,29 +295,30 @@ class Pedido_Produto extends Product
     }
 
     function getServicos($conn)
-        {
-            //retorna o nome do serviço
-            //retorna o preço adicional
-            //retorna o tamanho
-            //retorna a descricao do tamanho
-            //retorna a posição
-            //retorna comentarios
-            $query =   'SELECT  s.id,
+    {
+        //retorna o nome do serviço
+        //retorna o preço adicional
+        //retorna o tamanho
+        //retorna a descricao do tamanho
+        //retorna a posição
+        //retorna comentarios
+        $query =   'SELECT  s.id,
                                 s.desc,
                                 stp.preco,
                                 stp.tamanho,
                                 stp.desc_tamanho,
-                                pps.posicao,
+                                pos.descricao as posicao,
                                 pps.comment
                         FROM pedido_produto_servico as pps
                         JOIN servico_tamanho_preco stp  ON pps.fk_servico_id = stp.id
-                        JOIN servico s                  ON s.id = stp.fk_servico_id 
+                        JOIN servico s                  ON s.id = stp.fk_servico_id
+                        JOIN posicao pos                ON pos.id = pps.fk_posicao_id
                         WHERE pps.fk_pedido_produto_id = ?';
 
-            $stmt = $conn->prepare($query);
-            @$stmt->bind_param("i", $this->getIdPedidoProduto());
-            $stmt->execute();
-            $search = $stmt->get_result();
-            return $search;
-        }
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->getIdPedidoProduto());
+        $stmt->execute();
+        $search = $stmt->get_result();
+        return $search;
+    }
 }

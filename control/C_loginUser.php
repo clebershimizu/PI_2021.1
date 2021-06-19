@@ -19,6 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         session_start();
 
+        if (isset($_SESSION["loggedAdmin"])) {
+            unset($_SESSION["loggedAdmin"]);
+            unset($_SESSION["idAdmin"]);
+        }
+
         $_SESSION["loggedUser"] = True;
         $_SESSION["idUser"]     = $user["id"];
         $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);

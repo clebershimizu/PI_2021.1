@@ -1,6 +1,8 @@
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $docroot = $_SERVER['DOCUMENT_ROOT'];
 require_once "{$docroot}/PI_2021.1/lib/crypto.php";
@@ -19,6 +21,19 @@ if ($_SESSION["loggedUser"]) {
     header("Location: userLogin.php?erro={$msg}");
     exit();
 }
+
+$query =    "SELECT * FROM pedido WHERE fk_user_id = ? AND status > 1";
+$stmt = $conn->prepare($query);
+@$stmt->bind_param("i", $_SESSION['idUser']);
+$stmt->execute();
+$ordersCheck = $stmt->get_result();
+
+//REGRA DE NEGÓCIO = se há pedido
+$temPedidoPago = false;
+if ($ordersCheck->num_rows > 0) {
+    $temPedidoPago = true;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +44,7 @@ if ($_SESSION["loggedUser"]) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap/exemplos-do-bootstrap/sign-in/signin.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="lib/bootstrap/exemplos-do-bootstrap/sign-in/signin.css" /> -->
     <title>Conta</title>
 
     <style>
@@ -68,15 +83,60 @@ if ($_SESSION["loggedUser"]) {
             width: 240px;
             background-color: #0B610F;
         }
+
+
+        body {
+            height: 100%;
+        }
+
+        body {
+
+            align-content: center;
+            flex-wrap: wrap;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .header-new {
+            align-content: center;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 630px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
     </style>
+
 
 </head>
 
-<body>
+<body class="mt-0 mb-0 pt-0 pb-0">
     <?php include "view/header.php"; ?>
-
     <div class="form-signin">
-        <form action="control/C_updateUserData" method="POST">
+        <form action="control/C_updateUserData.php" method="POST">
 
             <!-- Buscar pela id -->
 
@@ -102,8 +162,10 @@ if ($_SESSION["loggedUser"]) {
             <input type="password" name="password-confirm" onkeyup="passwordMatch(this.value)" maxlength="30" minlength="8" class="form-control"><br>
             <br> -->
 
+
+
             <label for="cpf_cnpj">CNPJ_CPF</label><br>
-            <input type="text" name="cnpj_cpf" class="form-control" value="<?= aes_256("decrypt", $user->getCNPJ_CPF()) ?>"><br>
+            <input type="text" name="cnpj_cpf" class="form-control" value="<?= aes_256("decrypt", $user->getCNPJ_CPF()) ?>" <?= ($temPedidoPago) ? "disabled" : "" ?>><br>
             <br>
 
             <label for="cep">CEP</label><br>
@@ -132,7 +194,7 @@ if ($_SESSION["loggedUser"]) {
 
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
+                    <input type="checkbox" value="terms-accept" required> Declaro estar ciente dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
                 </label>
             </div>
 
