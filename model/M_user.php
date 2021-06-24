@@ -151,7 +151,6 @@ class User
     //FUNÇÃO PARA VERIFICAR LOGIN
     function searchLogin($conn)
     {
-        require_once '../lib/crypto.php';
         $query = 'SELECT * FROM user WHERE email LIKE ? AND user_password LIKE ? LIMIT 1';
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("ss", $this->getEmail(), $this->getPassword());
@@ -182,6 +181,13 @@ class User
                 WHERE id = ?";
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("ssssssi", $this->getName(), $this->getEmail(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement(), $this->getId());
+        $stmt->execute();
+    }
+    function deleteUserData($conn)
+    {
+        $query =    "DELETE FROM user WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->getId());
         $stmt->execute();
     }
 }

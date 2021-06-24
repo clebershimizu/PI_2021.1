@@ -14,6 +14,9 @@
             <a class="h5 link-light" href="">CONTATO</a>
           </div>
         </div>
+        <div class="col mt-0">
+          <a class="h5 link-light" href="adminLogin.php">ENTRAR COMO ADMINISTRADOR</a>
+        </div>
 
         <hr>
 

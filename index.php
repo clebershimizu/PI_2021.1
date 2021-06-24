@@ -1,3 +1,34 @@
+<?php
+session_start();
+
+
+if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
+  $id = $_COOKIE['id'];
+  require_once 'model/M_connection.php';
+  $dbConn = new Connection();
+  $conn = $dbConn->connect();
+  require_once 'model/M_user.php';
+  $userTemp = new User();
+  $userTemp->preencher($conn, $id);
+
+  $result = $userTemp->searchLogin($conn);
+  if ($result->num_rows > 0) {
+    //LOGADO
+    $user = $result->fetch_assoc();
+
+
+    if (isset($_SESSION["loggedAdmin"])) {
+      unset($_SESSION["loggedAdmin"]);
+      unset($_SESSION["idAdmin"]);
+    }
+
+    $_SESSION["loggedUser"] = True;
+    $_SESSION["idUser"]     = $user["id"];
+    $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);
+  }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 

@@ -10,55 +10,7 @@ class Product
     private $tecido;
     private $tipo_peca;
 
-    //DEMAIS MÉTODOS
 
-    function preencherProduto($conn, $id_p)
-    {
-        $query =   'SELECT * FROM produto 
-                    WHERE id = ?';
-        $stmt = $conn->prepare($query);
-        @$stmt->bind_param("i", $id_p);
-        $stmt->execute();
-        $search = $stmt->get_result();
-        $prod = $search->fetch_assoc();
-
-        $this->setIdProduto($prod['id']);
-        $this->setBaseCost($prod['base_cost']);
-        $this->setImgUrl($prod['image_url']);
-        $this->setTecido($prod['tecido']);
-        $this->setTipoPeca($prod['tipo_peca']);
-    }
-
-    public static function getProdutos($conn)
-    {
-
-        //Pegar todos os produtos cadastrados
-
-        $query = 'SELECT id FROM produto';
-        $stmt = $conn->prepare($query);
-        $stmt->execute();
-        $produtos = $stmt->get_result();
-
-        if ($produtos->num_rows > 0) {
-
-            // PARA CADA PEDIDO NÃO ORÇADO:
-            // 1. Construir um Objeto de Pedido
-            // 2. Preencher este Objeto com infos de um ID já existente;
-            // 3. Anexar em Array, que será retornado
-
-            $array = [];
-
-            while ($produto = $produtos->fetch_assoc()) {
-                $prod = new Product();
-                $prod->preencherProduto($conn, $produto['id']);
-                array_push($array, $prod);
-            }
-
-            return $array;
-        } else {
-            return 0;
-        }
-    }
 
     // GETS E SETS
 
@@ -116,12 +68,62 @@ class Product
     function getPosicoes($conn)
     {
         $query =   'SELECT * FROM posicao 
-                    WHERE id = ?';
+                    WHERE fk_produto_id = ?';
         $stmt = $conn->prepare($query);
-        @$stmt->bind_param("i", $this->id_produto);
+        $stmt->bind_param("i", $this->id_produto);
         $stmt->execute();
         $search = $stmt->get_result();
         return $search;
+    }
+
+    //DEMAIS MÉTODOS
+
+    function preencherProduto($conn, $id_p)
+    {
+        $query =   'SELECT * FROM produto 
+                    WHERE id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $id_p);
+        $stmt->execute();
+        $search = $stmt->get_result();
+        $prod = $search->fetch_assoc();
+
+        $this->setIdProduto($prod['id']);
+        $this->setBaseCost($prod['base_cost']);
+        $this->setImgUrl($prod['image_url']);
+        $this->setTecido($prod['tecido']);
+        $this->setTipoPeca($prod['tipo_peca']);
+    }
+
+    public static function getProdutos($conn)
+    {
+
+        //Pegar todos os produtos cadastrados
+
+        $query = 'SELECT id FROM produto';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $produtos = $stmt->get_result();
+
+        if ($produtos->num_rows > 0) {
+
+            // PARA CADA PEDIDO NÃO ORÇADO:
+            // 1. Construir um Objeto de Pedido
+            // 2. Preencher este Objeto com infos de um ID já existente;
+            // 3. Anexar em Array, que será retornado
+
+            $array = [];
+
+            while ($produto = $produtos->fetch_assoc()) {
+                $prod = new Product();
+                $prod->preencherProduto($conn, $produto['id']);
+                array_push($array, $prod);
+            }
+
+            return $array;
+        } else {
+            return 0;
+        }
     }
 }
 

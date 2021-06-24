@@ -28,6 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $_SESSION["idUser"]     = $user["id"];
         $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);
 
+
+        if (isset($_POST['stayConnected'])) {
+            setcookie("id", $user["id"], time() + 3600 * 24 * 3, "/");
+        } else {
+            setcookie("id", $user["id"], time(), "/");
+        }
+
         header("Location: ../index.php");
         exit();
     } else {

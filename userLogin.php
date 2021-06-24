@@ -33,7 +33,7 @@
 
                 <div class="checkbox mb-3">
                     <label>
-                        <input type="checkbox" value="remember-me"> Manter conectado
+                        <input type="checkbox" name="stayConnected" value="remember-me"> Manter conectado
                     </label>
                 </div>
                 <input class="w-100 btn btn-lg btn-primary" type="submit" value="Entrar">

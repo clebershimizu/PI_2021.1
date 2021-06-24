@@ -56,9 +56,9 @@ if (!isset($_SESSION['loggedAdmin'])) {
         }
 
         function deletePosition() {
-            lastPosition = d.getElementById('campos_posicoes').lastChild
+            lastPosition = d.getElementById('campos_posicoes').lastElementChild
+            lastPositionCb = d.getElementById('checkbox_hidden').lastElementChild
             d.getElementById('campos_posicoes').removeChild(lastPosition)
-            lastPositionCb = d.getElementById('checkbox_hidden').lastChild
             d.getElementById('checkbox_hidden').removeChild(lastPositionCb)
 
             if (count > 2) {
@@ -90,28 +90,45 @@ if (!isset($_SESSION['loggedAdmin'])) {
             </tr>
 
             <?php
-            try {
-                require_once 'Model/M_connection.php';
-                $dbConn = new Connection();
-                $conn = $dbConn->connect();
 
-                require_once "model/M_product.php";
-                $produtos = Product::getProdutos($conn);
-            } catch (Exception $e) {
-            }
+            require_once 'Model/M_connection.php';
+            $dbConn = new Connection();
+            $conn = $dbConn->connect();
 
+            require_once "model/M_product.php";
+            $produtos = Product::getProdutos($conn);
 
+            foreach ($produtos as $prod) {
+
+                $id = $prod->getIdProduto();
+                $tipo = $prod->getTipoPeca();
+                $tecido = $prod->getTecido();
+                $cost = $prod->getBaseCost();
+                $url = $prod->getImgUrl();
             ?>
 
-            <tr>
-                <td id="id"></td>
-                <td id="tipo_peca"></td>
-                <td id="tecido"></td>
-                <td id="base_cost"></td>
-                <td id="image_url"></td>
-                <td><button class="w-50 btn btn-md btn-primary" type="submit">Editar</button></td>
-                <td><button class="w-50 btn btn-md btn-danger" type="submit">Remover</button></td>
-            </tr>
+                <tr>
+                    <td id="<?= $id ?>-id"><?= $id ?></td>
+                    <td id="<?= $id ?>-tipo_peca"><?= $tipo ?></td>
+                    <td id="<?= $id ?>-tecido"><?= $tecido ?></td>
+                    <td id="<?= $id ?>-base_cost"><?= $cost ?></td>
+                    <td id="<?= $id ?>-image_url"><?= $url ?></td>
+                    <td id="<?= $id ?>-posicoes">
+                        <select id="select">
+                            <option value="" selected disabled>Visualizar</option>
+                            <?php
+                            $posicoes = $prod->getPosicoes($conn);
+                            while ($pos = $posicoes->fetch_assoc()) { ?>
+                                <option value="" disabled><?= $pos['descricao'] ?></option>
+                            <?php    }
+                            ?>
+                        </select>
+                    </td>
+                    <td><a class="btn btn-md btn-primary" href="adminProdutoEdit.php?id=<?= $id ?>">Editar</a></td>
+                    <td><a class="btn btn-md btn-danger" href="adminProdutoEdit.php?id=<?= $id ?>">Excluir</a></td>
+                </tr>
+
+            <?php } ?>
 
         </table>
 
