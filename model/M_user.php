@@ -176,9 +176,10 @@ class User
             $cnpj_cpfCheck = $cnpj_cpfCheck->fetch_assoc();
 
             $this->setCNPJ_CPF(aes_256("decrypt", $cnpj_cpfCheck["cnpj_cpf"]));
+
         }
         $query =    "UPDATE user SET name = ? , email = ? , cnpj_cpf = ?, cep = ?  ,house_number = ? , complement = ? 
-                WHERE id = ?";
+                    WHERE id = ?";
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("ssssssi", $this->getName(), $this->getEmail(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement(), $this->getId());
         $stmt->execute();
@@ -189,5 +190,18 @@ class User
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("i", $this->getId());
         $stmt->execute();
+    }
+    function haveOrders($conn) {
+        $query =    "SELECT * FROM pedido WHERE fk_user_id = ? AND status > 1";
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->getId());
+        $stmt->execute();
+        $ordersCheck = $stmt->get_result();
+
+        if ($ordersCheck->num_rows > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

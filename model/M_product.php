@@ -1,6 +1,6 @@
 <?php
 
-//ESTE ARQUIVO POSSUI DUAS CLASSES, PRODUTO E SUA EXTENSÃO, PEDIDO_PRODUTO.
+// =-= ESTE ARQUIVO POSSUI DUAS CLASSES, PRODUTO E SUA EXTENSÃO, PEDIDO_PRODUTO.
 
 class Product
 {
@@ -17,7 +17,9 @@ class Product
     //ID Produto
     function setIdProduto($id)
     {
-        $this->id_produto = $id;
+        $s_id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        if (!$s_id) throw new Exception('Valor para ID inválido.');
+        $this->id_produto = $s_id;
     }
     function getIdProduto()
     {
@@ -27,7 +29,9 @@ class Product
     //Base Cost
     function setBaseCost($bc)
     {
-        $this->base_cost = $bc;
+        $s_bc = filter_var($bc, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        if (!$s_bc) throw new Exception('Valor para Custo Base inválido.');
+        $this->base_cost = $s_bc;
     }
     function getBaseCost()
     {
@@ -37,7 +41,9 @@ class Product
     //IMG URL
     function setImgUrl($url)
     {
-        $this->img_url = $url;
+        $s_url = filter_var($url, FILTER_SANITIZE_STRING, );
+        if (!$s_url) throw new Exception('Valor para URL da Imagem inválido.');
+        $this->img_url = $s_url;
     }
     function getImgUrl()
     {
@@ -47,7 +53,9 @@ class Product
     //Tecido
     function setTecido($tecido)
     {
-        $this->tecido = $tecido;
+        $s_tec = filter_var($tecido, FILTER_SANITIZE_STRING);
+        if (!$s_tec) throw new Exception('Valor para Tecido inválido.');
+        $this->tecido = $s_tec;
     }
     function getTecido()
     {
@@ -57,7 +65,9 @@ class Product
     //Tipo Peca
     function setTipoPeca($tp)
     {
-        $this->tipo_peca = $tp;
+        $s_tp = filter_var($tp, FILTER_SANITIZE_STRING);
+        if (!$s_tp) throw new Exception('Valor para Tipo Peca inválido.');
+        $this->tipo_peca = $s_tp;
     }
     function getTipoPeca()
     {
@@ -70,13 +80,119 @@ class Product
         $query =   'SELECT * FROM posicao 
                     WHERE fk_produto_id = ?';
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $this->id_produto);
+        @$stmt->bind_param("i", $this->getIdProduto());
         $stmt->execute();
         $search = $stmt->get_result();
         return $search;
     }
 
     //DEMAIS MÉTODOS
+
+    function registerProduct($conn, $array_str_pos)
+    {
+
+        //INSERIR O NOVO PRODUTO, E PEGAR O ID NO BANCO
+        $query =   'INSERT INTO produto (
+                    base_cost,
+                    image_url,
+                    tecido,
+                    tipo_peca,
+                    available)
+                    VALUES ( ? , ? , ? , ? , 1 );';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param(
+            "dsss",
+            $this->getBaseCost(),
+            $this->getImgUrl(),
+            $this->getTecido(),
+            $this->getTipoPeca()
+        );
+        $stmt->execute();
+
+        $query =   ' SELECT id FROM `produto` ORDER BY id DESC LIMIT 1';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $search = $stmt->get_result();
+        $id = $search->fetch_assoc();
+        $id = $id['id'];
+
+        //INSERIR AS POSICOES DO PRODUTO
+
+        $query =   'INSERT INTO posicao (descricao, fk_produto_id) VALUES ( ? , ? )';
+        $stmt = $conn->prepare($query);
+
+        foreach ($array_str_pos as $descricao) {
+            @$stmt->bind_param("si",  $descricao, $id);
+            $stmt->execute();
+        }
+    }
+
+    function updateProduct($conn, $array_str_pos)
+    {
+
+        //UPDATE DADOS DO PRODUTO, E PEGAR O ID NO BANCO
+        $query =   'UPDATE produto SET
+                    base_cost = ?,
+                    image_url = ?,
+                    tecido = ?,
+                    tipo_peca = ?
+                    WHERE id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param(
+            "dsssi",
+            $this->getBaseCost(),
+            $this->getImgUrl(),
+            $this->getTecido(),
+            $this->getTipoPeca(),
+            $this->getIdProduto()
+        );
+        $stmt->execute();
+
+
+        try {
+
+            //DELETAR POSIÇÕES ANTIGAS (ISSO VAI DAR PROBLEMA UMA HORA.)
+            //POIS SE DELETAR POSIÇÕES QUE JÁ FORAM REFERENCIADAS O DELETE NÃO FUNCIONARÁ.
+            $query =   'DELETE FROM posicao WHERE fk_produto_id = ? ';
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("i", $this->getIdProduto());
+            $stmt->execute();
+
+            $query =   'SELECT id FROM posicao WHERE fk_produto_id = ? ';
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("i", $this->getIdProduto());
+            $stmt->execute();
+            $search = $stmt->get_result();
+
+            if ($search->num_rows == 0) {
+
+                //INSERIR AS NOVAS POSICOES DO PRODUTO
+
+                $query =   'INSERT INTO posicao (descricao, fk_produto_id) VALUES ( ? , ? )';
+                $stmt = $conn->prepare($query);
+
+                foreach ($array_str_pos as $descricao) {
+                    @$stmt->bind_param("si",  $descricao, $this->getIdProduto() );
+                    $stmt->execute();
+                }
+            }
+        } catch (Exception $e) {
+            //só pra nao quebrar violentamente
+        }
+    }
+
+    function deactivateProduct($conn)
+    {
+        $query =   'UPDATE produto SET available = 0 
+                    WHERE fk_produto_id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->getIdProduto());
+        $stmt->execute();
+        $search = $stmt->get_result();
+        return $search;
+    }
+
+    //MÉTODOS ESTÁTICOS
 
     function preencherProduto($conn, $id_p)
     {
@@ -98,9 +214,9 @@ class Product
     public static function getProdutos($conn)
     {
 
-        //Pegar todos os produtos cadastrados
+        //Pegar todos os produtos cadastrados (DISPONÍVEIS, available = 1)
 
-        $query = 'SELECT id FROM produto';
+        $query = 'SELECT id FROM produto WHERE available = 1';
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $produtos = $stmt->get_result();

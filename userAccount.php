@@ -46,7 +46,14 @@ if ($ordersCheck->num_rows > 0) {
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" type="text/css" href="lib/bootstrap/exemplos-do-bootstrap/sign-in/signin.css" /> -->
     <title>Conta</title>
-
+    <script>
+        var d = document
+        function confirmDeletion() {
+            if(window.confirm("Tem certeza que deseja deletar a sua conta?")) {
+                d.getElementById('accDelete').submit()
+            }
+        }
+    </script>
     <style>
         .strength0 {
             height: 20px;
@@ -134,7 +141,8 @@ if ($ordersCheck->num_rows > 0) {
 </head>
 
 <body class="mt-0 mb-0 pt-0 pb-0">
-    <?php include "view/header.php"; ?>
+    <?php include "view/header.php";  ?>
+
     <div class="form-signin">
         <form action="control/C_updateUserData.php" method="POST">
 
@@ -200,6 +208,11 @@ if ($ordersCheck->num_rows > 0) {
 
             <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Atualizar cadastro</button> -->
             <input class="w-100 btn btn-lg btn-primary" type="submit" value="Atualizar cadastro">
+            <hr>
+            
+        </form>
+        <form id="accDelete" name="accDelete" action="control/C_deleteUserData.php" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar sua conta?');">
+            <input type="submit" class="w-100 btn btn-lg btn-primary" value="Deletar Conta">
         </form>
     </div>
 

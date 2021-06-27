@@ -279,6 +279,7 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
 
     <!-- POPUP ALERTA DE CONSENTIMENTO -->
 
+    <?php if(!isset($_COOKIE['aceito'])){ ?>
     <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
       <div class="row">
         <div class="col-11">
@@ -296,13 +297,15 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
         </div>
       </div>
     </div>
-    </div>
+    <!-- </div> -->
+    <?php } ?>
     <!---->
     <script>
       var d = document
       d.getElementById('btn-cookie-accept')
         .addEventListener('click', () => {
           d.getElementById('lawmsg').hidden = true
+          d.cookie='aceito=true'
         });
       d.getElementById('btn-cookie-close')
         .addEventListener('click', () => {

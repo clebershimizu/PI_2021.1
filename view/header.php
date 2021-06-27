@@ -87,3 +87,10 @@ if (isset($_SESSION["loggedUser"])) {
     </div>
   </nav>
 </header>
+<?php
+//ERROR CATCHER
+if(isset($_GET['erro'])) { ?>
+        <div class="alert alert-warning" role="alert">
+        <?php echo $_GET['erro'];?> 
+        </div>
+    <?php }

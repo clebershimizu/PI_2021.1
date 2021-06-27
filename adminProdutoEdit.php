@@ -74,6 +74,7 @@ $prod->preencherProduto($conn, $id);
             newPositionCb.name = "pos[]"
             newPositionCb.id = "c-p-" + count
             newPositionCb.value = "p-" + count
+            newPositionCb.checked = "checked"
             newPositionCb.hidden = true
             d.getElementById('checkbox_hidden').appendChild(newPositionCb)
 
@@ -107,90 +108,92 @@ $prod->preencherProduto($conn, $id);
         <h1>Editar Produto</h1>
         <hr>
 
-        <div class="col-10 col-xs-10 col-sm-8 col-md-7 col-lg-7 col-xl-6">
-            <label for="description">Descrição</label> <br>
-            <input type="text" name="description" class="form-control" value="<?= $prod->getTipoPeca() ?>">
-            <br>
-            <label for="tecido">Tecido</label> <br>
-            <input type="text" name="tecido" class="form-control" value="<?= $prod->getTecido() ?>">
-            <br>
-            <label for="base_cost">Custo Base</label> <br>
-            <input type="number" name="base_cost" class="form-control" value="<?= $prod->getBaseCost() ?>">
-            <br>
-            <label for="picture">Imagem</label> <br>
-            <input type="text" name="picture" class="form-control" value="<?= $prod->getImgUrl() ?>">
-            <br>
+        <form action="control/C_updateProduct.php?id=<?=$id?>" method="POST">
+            <div class="col-10 col-xs-10 col-sm-8 col-md-7 col-lg-7 col-xl-6">
+                <label for="description">Descrição</label> <br>
+                <input type="text" name="description" class="form-control" value="<?= $prod->getTipoPeca() ?>">
+                <br>
+                <label for="tecido">Tecido</label> <br>
+                <input type="text" name="tecido" class="form-control" value="<?= $prod->getTecido() ?>">
+                <br>
+                <label for="base_cost">Custo Base</label> <br>
+                <input type="number" name="base_cost" class="form-control" value="<?= $prod->getBaseCost() ?>">
+                <br>
+                <label for="picture">Imagem</label> <br>
+                <input type="text" name="picture" class="form-control" value="<?= $prod->getImgUrl() ?>">
+                <br>
 
-            <div id="posicoes">
-                <hr>
+                <div id="posicoes">
+                    <hr>
 
-                <h3 class="h3 mb-3 fw-normal">Posições para Serviços</h3>
+                    <h3 class="h3 mb-3 fw-normal">Posições para Serviços</h3>
 
-                <?php
+                    <?php
 
-                // CÓDIGO PRA CAMPOS DINAMICOS
+                    // CÓDIGO PRA CAMPOS DINAMICOS
 
-                $posicoes = $prod->getPosicoes($conn);
+                    $posicoes = $prod->getPosicoes($conn);
 
-                if ($posicoes->num_rows == 0) { ?>
-                    <input type="text" class="form-control mb-2" id="i-p-1" name="p-1" placeholder="Ex: Manga Direita" required>
-                    <div id="campos_posicoes">
+                    if ($posicoes->num_rows == 0) { ?>
+                        <input type="text" class="form-control mb-2" id="i-p-1" name="p-1" placeholder="Ex: Manga Direita" required>
+                        <div id="campos_posicoes">
+                        </div>
 
-                    </div>
-                    <?php } else {
+                        <?php } else {
 
-                    $count = 0;
-                    while ($pos = $posicoes->fetch_assoc()) {
-                        $count++;
+                        $count = 0;
+                        while ($pos = $posicoes->fetch_assoc()) {
+                            $count++;
 
-                        if ($count == 1) { ?>
-                            <input type="text" class="form-control mb-2" id="i-p-<?= $count ?>" name="p-<?= $count ?>" placeholder="Ex: Manga Direita" value="<?= $pos['descricao'] ?>" required>
-                            <div id="campos_posicoes">
-                            <?php } else { ?>
+                            if ($count == 1) { ?>
                                 <input type="text" class="form-control mb-2" id="i-p-<?= $count ?>" name="p-<?= $count ?>" placeholder="Ex: Manga Direita" value="<?= $pos['descricao'] ?>" required>
-                        <?php }
-                    } ?>
-                            </div>
-                        <?php }
+                                <div id="campos_posicoes">
+                                <?php } else { ?>
+                                    <input type="text" class="form-control mb-2" id="i-p-<?= $count ?>" name="p-<?= $count ?>" placeholder="Ex: Manga Direita" value="<?= $pos['descricao'] ?>" required>
+                            <?php }
+                        } ?>
+                                </div>
+                            <?php }
 
-                    // CÓDIGO PARA HIDDEN CHECKBOXES DINAMICOS
+                        // CÓDIGO PARA HIDDEN CHECKBOXES DINAMICOS
 
-                    if ($count == 0) { ?>
-                            <input type="checkbox" name="pos[]" id="c-p-1" value="p-1" hidden>
-                            <div id="checkbox_hidden" hidden>
+                        if ($count == 0) { ?>
+                                <input type="checkbox" name="pos[]" id="c-p-1" value="p-1" checked="checked" hidden>
+                                <div id="checkbox_hidden" hidden>
 
-                            </div>
+                                </div>
 
-                            <?php } else {
+                                <?php } else {
 
-                            for ($i = 0; $i < $count; $i++) {
+                                for ($i = 0; $i < $count; $i++) {
 
-                                if ($i == 0) { ?>
-                                    <input type="checkbox" name="pos[]" id="c-p-<?= ($i + 1) ?>" value="p-<?= ($i + 1) ?>" hidden>
-                                    <div id="checkbox_hidden" hidden>
-                                    <?php } else { ?>
-                                        <input type="checkbox" name="pos[]" id="c-p-<?= ($i + 1) ?>" value="p-<?= ($i + 1) ?>" hidden>
+                                    if ($i == 0) { ?>
+                                        <input type="checkbox" name="pos[]" id="c-p-<?= ($i + 1) ?>" value="p-<?= ($i + 1) ?>" checked="checked" hidden>
+                                        <div id="checkbox_hidden" hidden>
+                                        <?php } else { ?>
+                                            <input type="checkbox" name="pos[]" id="c-p-<?= ($i + 1) ?>" value="p-<?= ($i + 1) ?>" checked="checked" hidden>
+                                        <?php } ?>
+
+                                    <?php } ?>
+                                        </div>
                                     <?php } ?>
 
-                                <?php } ?>
+                                    <!-- ATUALIZAR FUNCAO DE ADICIONAR POSICAO -->
+                                    <div class="py-2">
+                                        <input type="button" value="Adicionar Posição +" class="btn btn-success" id="add_pos" onclick="createPosition();">
                                     </div>
-                                <?php } ?>
-
-                                <!-- ATUALIZAR FUNCAO DE ADICIONAR POSICAO -->
-                                <div class="py-2">
-                                    <input type="button" value="Adicionar Posição +" class="btn btn-success" id="add_pos" onclick="createPosition();">
-                                </div>
-                                <div>
-                                    <input type="button" value="Remover Última Posição Adicionada -" class="btn btn-danger btn-sm" id="rem_pos" onclick="deletePosition();">
-                                </div>
+                                    <div>
+                                        <input type="button" value="Remover Última Posição Adicionada -" class="btn btn-danger btn-sm" id="rem_pos" onclick="deletePosition();">
+                                    </div>
 
 
-                                <br>
+                                    <br>
+                </div>
+
+                <hr>
+                <button class="w-50 btn btn-lg btn-primary" type="submit">Adicionar</button>
             </div>
-
-            <hr>
-            <button class="w-50 btn btn-lg btn-primary" type="submit">Adicionar</button>
-        </div>
+        </form>
     </main>
 
 
