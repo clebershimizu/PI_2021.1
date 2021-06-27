@@ -18,7 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $user->setComplement($_POST["complemento"]);
 
         $result = $user->registerUser($conn);
-        header("Location: ../userLogin.php");
+        if ($result) {
+            $msg = "Cadastro realizado com sucesso";
+            header("Location: ../userLogin.php?success={$msg}");
+        } else {
+            $msg = "Já existe uma conta com este E-mail e/ou CPF/CNPJ";
+            header("Location: ../userRegister.php?erro={$msg}");
+        }
     } catch (Exception $e) {
         $msg = $e->getMessage();
         header("Location: ../userRegister.php?erro={$msg}");

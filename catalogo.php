@@ -17,7 +17,7 @@
 
     <!-- Custom styles for this template -->
     <link href="lib/bootstrap/dist/css/carousel.css" rel="stylesheet">
-    
+
 
     <!-- CSS temporário para os placeholders (imagens em cinza) -->
     <style>
@@ -48,7 +48,7 @@
                 <h2>Produtos</h2>
             </div>
 
-            <!--ROW = CONTAINER DE COLUNAS... AQUI DENTRO ELAS SE AJEITAM SOZINHAS, SEGUNDO OS PARAMETROS DE TELA (rows-cols-tamanho-qtde por linha)-->
+            <!--ROW = CONTAINER DE COLUNAS... AQUI DENTRO ELAS SE AJEITAM SOZINHAS, SEGUNDO OS PARAMETROS DE TELA (rows-cols-screensize-qtde por linha)-->
             <div class="row m-auto row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6">
 
                 <!--LOOP EM PHP-->

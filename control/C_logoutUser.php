@@ -1,11 +1,17 @@
 <?php
 session_start();
-unset($_SESSION["loggedUser"]);
-unset($_SESSION["idUser"]);
-unset($_SESSION["nameUser"]);
+if (isset($_SESSION["loggedUser"])) {
+    unset($_SESSION["loggedUser"]);
+    unset($_SESSION["idUser"]);
+    unset($_SESSION["nameUser"]);
+}
 
-unset($_SESSION["loggedAdmin"]);
-unset($_SESSION["idAdmin"]);
+if (isset($_SESSION["loggedAdmin"])) {
+    unset($_SESSION["loggedAdmin"]);
+    unset($_SESSION["idAdmin"]);
+}
+
+setcookie("id", $user["id"], time(), "/");
 
 session_destroy();
 header("Location: ../index.php");

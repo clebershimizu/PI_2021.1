@@ -140,12 +140,25 @@ class User
     //CADASTRO DE USUÁRIO
     function registerUser($conn)
     {
+        $query = "SELECT email, cnpj_cpf FROM user";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $results = $stmt->get_result();
+
+        while ($result = $results->fetch_assoc()) {
+            if ($result['cnpj_cpf'] == $this->getCNPJ_CPF() || $result['email'] == $this->getEmail()) {
+                return 0;
+            }
+        }
+
         $query = "INSERT INTO user (name, email, user_password, cnpj_cpf, cep, house_number, complement)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement());
         $stmt->execute();
+
+        return 1;
     }
 
     //FUNÇÃO PARA VERIFICAR LOGIN
@@ -176,7 +189,6 @@ class User
             $cnpj_cpfCheck = $cnpj_cpfCheck->fetch_assoc();
 
             $this->setCNPJ_CPF(aes_256("decrypt", $cnpj_cpfCheck["cnpj_cpf"]));
-
         }
         $query =    "UPDATE user SET name = ? , email = ? , cnpj_cpf = ?, cep = ?  ,house_number = ? , complement = ? 
                     WHERE id = ?";
@@ -191,7 +203,8 @@ class User
         @$stmt->bind_param("i", $this->getId());
         $stmt->execute();
     }
-    function haveOrders($conn) {
+    function haveOrders($conn)
+    {
         $query =    "SELECT * FROM pedido WHERE fk_user_id = ? AND status > 1";
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("i", $this->getId());
