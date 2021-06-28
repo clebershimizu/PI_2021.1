@@ -25,6 +25,13 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     $_SESSION["loggedUser"] = True;
     $_SESSION["idUser"]     = $user["id"];
     $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);
+
+    if (!isset($_COOKIE['cart'])) {
+      $cart = [];
+      @setcookie('cart', $cart, time() + 3600 * 24 * 3, "/");
+    } else {
+      setcookie('cart', $_COOKIE['cart'], time() + 3600 * 24 * 3, "/");
+    }
   }
 }
 ?>
@@ -279,25 +286,25 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
 
     <!-- POPUP ALERTA DE CONSENTIMENTO -->
 
-    <?php if(!isset($_COOKIE['aceito'])){ ?>
-    <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
-      <div class="row">
-        <div class="col-11">
+    <?php if (!isset($_COOKIE['aceito'])) { ?>
+      <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
+        <div class="row">
+          <div class="col-11">
 
-          We use cookies on this website to distinguish you from other users. We use this data to enhance your experience and for targeted advertising. &nbsp; By continuing to use this website you consent to our use of cookies. &nbsp; For more information, please see our &nbsp;
-          <a href="privacy.html" target="_blank">Cookie Policy</a>.
-          <br>
-        </div>
-        <div class="col-1">
-          <button id="btn-cookie-accept" type="button" class="btn w-100 btn-sm btn-info">Aceitar</button>
+            We use cookies on this website to distinguish you from other users. We use this data to enhance your experience and for targeted advertising. &nbsp; By continuing to use this website you consent to our use of cookies. &nbsp; For more information, please see our &nbsp;
+            <a href="privacy.html" target="_blank">Cookie Policy</a>.
+            <br>
+          </div>
+          <div class="col-1">
+            <button id="btn-cookie-accept" type="button" class="btn w-100 btn-sm btn-info">Aceitar</button>
 
-          <button id="btn-cookie-close" type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true"></span>
-          </button>
+            <button id="btn-cookie-close" type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- </div> -->
+      <!-- </div> -->
     <?php } ?>
     <!---->
     <script>
@@ -305,7 +312,7 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
       d.getElementById('btn-cookie-accept')
         .addEventListener('click', () => {
           d.getElementById('lawmsg').hidden = true
-          d.cookie='aceito=true'
+          d.cookie = 'aceito=true'
         });
       d.getElementById('btn-cookie-close')
         .addEventListener('click', () => {

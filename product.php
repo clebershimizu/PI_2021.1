@@ -32,8 +32,7 @@ $produto = $result->fetch_assoc();
 $cores =    $conn->query("SELECT * FROM cor");
 $tamanhos = $conn->query("SELECT * FROM tamanho");
 $costuras = $conn->query("SELECT * FROM costura");
-$servicos = $conn->query("SELECT * FROM servico");
-$posicoes = $conn->query("SELECT * FROM posicao");
+
 
 
 ?>
@@ -48,7 +47,9 @@ $posicoes = $conn->query("SELECT * FROM posicao");
     <title>Adicionar Produto</title>
 
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
 
+    </script>
     <style>
         .logo {
             padding: 2rem 0 2rem 0;
@@ -68,6 +69,69 @@ $posicoes = $conn->query("SELECT * FROM posicao");
         }
     </style>
 
+    <script>
+        var d = document
+
+        function atualizarTamanhos(idCampo, idServico) {
+            //pegar o id do novo servico, no value do select
+            //repassar para a requisicao ajax
+
+            aux = idCampo.split("-")
+            idCampo = aux[0]
+            idServico = parseInt(idServico)
+
+            xhr = new XMLHttpRequest()
+            xhr.onreadystatechange = function() {
+
+                //Limpar o elemento "select" de tamanho
+                //Criar um campo option "vazio" escrito "Selecione"
+
+                //Recuperar o json da query
+                //Iterar sobre o vetor usando forEach
+                //Criar um elemento "option" com as informacoes de cada tamanho (estao na forma de objeto)
+
+                if (this.readyState == 4 && this.status == 200) {
+
+                    //LIMPAR O SELECT
+                    let selectTamanhos = d.getElementById(idCampo + "-select-tamanho")
+                    selectTamanhos.innerHTML = ""
+
+                    //CRIAR A OPÇÃO "SELECIONE" VAZIA 
+                    let newOption = d.createElement('option')
+                    newOption.value = ""
+                    newOption.disabled = true
+                    newOption.selected = true
+                    newOption.innerHTML = "Selecione"
+
+                    selectTamanhos.appendChild(newOption)
+
+                    //RECUPERAR O JSON, DO ECHO DO PHP
+                    servicos = JSON.parse(this.responseText)
+
+                    //ITERAR SOBRE OS DADOS CRIANDO AS OPTIONS
+                    servicos.forEach((servico) => {
+                        //não é o ID do servico, é do "servico_tamanho_preco"
+                        let id = servico.id
+                        let preco = servico.preco
+                        //ex: M
+                        let tamanho = servico.tamanho
+                        //ex: 15cm
+                        let desc = servico.desc_tamanho
+
+                        let newOption = d.createElement('option')
+                        newOption.value = id
+                        newOption.innerHTML = tamanho + "(" + desc + ")"
+
+                        selectTamanhos.appendChild(newOption)
+                    })
+
+                }
+            }
+            xhr.open("GET", "lib/getServicoTamanhoPreco.php?id=" + idServico, true)
+            xhr.send()
+        }
+    </script>
+
     <script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="script.js"></script>
 
@@ -83,6 +147,8 @@ $posicoes = $conn->query("SELECT * FROM posicao");
         <hr>
 
         <form action="control/C_addToCart.php" method="POST">
+            <input type="text" hidden name="idProduto" value="<?= $idProduto ?>">
+
             <div id="product" class="col-10 col-xs-10 col-sm-8 col-md-7 col-lg-7 col-xl-6">
 
                 <div id="product-mandatory">
@@ -101,7 +167,7 @@ $posicoes = $conn->query("SELECT * FROM posicao");
                     <!-- COR DO PRODUTO -->
                     <br>
                     <h4>Escolha a cor</h4>
-                    <select class="form-select" aria-label="prodColor" id="descricao">
+                    <select class="form-select" id="cor" name="cor">
                         <option value="" selected disabled>Selecione</option>
 
                         <?php while ($cor = $cores->fetch_assoc()) { ?>
@@ -117,8 +183,8 @@ $posicoes = $conn->query("SELECT * FROM posicao");
 
                     <?php while ($tamanho = $tamanhos->fetch_assoc()) { ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="inlineCheckbox2" value="<?= $tamanho['id'] ?>" name="tamanho">
-                            <label class="form-check-label" for="inlineCheckbox2"><?= $tamanho['desc'] ?></label>
+                            <input class="form-check-input" type="radio" value="<?= $tamanho['id'] ?>" name="tamanho">
+                            <label class="form-check-label"><?= $tamanho['desc'] ?></label>
                         </div>
                     <?php } ?>
 
@@ -142,9 +208,11 @@ $posicoes = $conn->query("SELECT * FROM posicao");
                     <!-- QUANTIDADE DO PRODUTO -->
 
                     <h4>Informe a quantidade desejada</h4>
-                    <input type="text" name="number" class="form-control"><br>
+                    <input type="number" class="form-control" name="quantidade">
 
+                    <br>
                     <hr>
+
                 </div>
 
 
@@ -157,51 +225,71 @@ $posicoes = $conn->query("SELECT * FROM posicao");
                 <div id="product-optional">
 
                     <!-- LOOP TEMPORARIO PARA TESTAR CSS -->
-                    <?php for ($i = 0; $i < 2; $i++) { ?>
+                    <?php for ($i = 1; $i <= 3; $i++) {
 
-                        <div id="service-1">
+                        $servicos = $conn->query("SELECT * FROM servico");
+                        $posicoes = $conn->query("SELECT * FROM posicao"); ?>
+
+                        <div id="service-<?= $i ?>">
+
+                            <input type="checkbox" checked="checked" name="servicos[]" value="<?= $i ?>" hidden>
+
                             <hr class="mb-1 mt-5">
                             <div class='row'>
+
                                 <!-- CAMPO DO SERVICO -->
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
                                     <span>Serviço</span>
-                                    <select class="form-select" aria-label="bordadoTop" id="bordadoTop">
-                                        <option value="" selected disabled>Selecione</option>
 
+                                    <!-- Ao mudar o servico, atualiza os campos de tamanho:
+                                    Junto é passado o id deste bloco de servicos (para guiar o getelementbyid),
+                                    e o ID do novo servico (fica no value da opcao selecionada) -->
+
+                                    <select class="form-select" id="<?= $i ?>-select-servico" name="<?= $i ?>-select-servico" onchange="atualizarTamanhos(this.id, this.options[this.selectedIndex].value)">
+                                        <option value="" selected disabled>Selecione</option>
                                         <?php while ($servico = $servicos->fetch_assoc()) { ?>
                                             <option value="<?= $servico['id'] ?>"><?= $servico['desc'] ?></option>
                                         <?php } ?>
                                     </select>
+
                                 </div>
+
                                 <!-- CAMPO DO POSICIONAMENTO -->
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                     <span>Posicionamento</span>
-                                    <select class="form-select" aria-label="bordadoTop" id="bordadoTop">
-                                        <option value="" selected disabled>Selecione</option>
 
+                                    <select class="form-select" id="<?= $i ?>-select-posicao" name="<?= $i ?>-select-posicao">
+                                        <option value="" selected disabled>Selecione</option>
                                         <?php while ($posicao = $posicoes->fetch_assoc()) { ?>
                                             <option value="<?= $posicao['id'] ?>"><?= $posicao['descricao'] ?></option>
                                         <?php } ?>
                                     </select>
+
                                 </div>
+
                                 <!-- CAMPO DO TAMANHO: OPTIONS SÃO DINAMICAS, AJAX PARA PREENCHER, POIS DEPENDE DO CAMPO DE SERVICO -->
                                 <!-- AINDA INCOMPLETO -->
+
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+
                                     <span>Tamanho</span>
-                                    <select class="form-select" aria-label="bordadoTopSize" id="bordadoTopSize">
-                                        <option selected>P</option>
-                                        <option value="1">M</option>
-                                        <option value="2">G</option>
+                                    <select class="form-select" id="<?= $i ?>-select-tamanho" name="<?= $i ?>-select-tamanho">
+                                        <option value="" selected disabled>Selecione um Serviço</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
+
+
 
                     <?php } ?>
                     <!--FIM DA DIV DO SERVICO 2-->
 
                 </div>
                 <!--FIM DA DIV DE SERVICOS (PRODUCT-OPTIONAL)-->
+
+
+
             </div>
             <!--FIM DA DIV PRODUCT-->
 

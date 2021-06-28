@@ -35,10 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             setcookie("id", $user["id"], time(), "/");
         }
 
+        if (!isset($_COOKIE['cart'])) {
+            $cart = [];
+            @setcookie('cart', $cart, time() + 3600 * 24 * 3, "/");
+        } else {
+            setcookie('cart', $_COOKIE['cart'], time() + 3600 * 24 * 3, "/");
+        }
+
         header("Location: ../index.php");
         exit();
     } else {
-
         //CREDENCIAIS INCORRETAS
         $msg = "Dados incorretos. Tente Novamente";
         header("Location: ../userLogin.php?erro={$msg}");

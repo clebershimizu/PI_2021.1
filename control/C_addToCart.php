@@ -14,28 +14,44 @@ require_once "{$docroot}/PI_2021.1/lib/crypto.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $id_p = $_POST['id_p'];
-
     require_once '../model/M_connection.php';
+    require_once '../model/M_cartProduct.php';
+
     $dbConn = new Connection();
     $conn = $dbConn->connect();
-    require_once '../model/M_product.php';
-    $produto = new Pedido_Produto();
-    $produto->preencherProduto($conn, $id_p);
 
+    //CRIANDO COOKIE DE CART SE NÃO EXISTE
     if (!isset($_COOKIE['cart'])) {
-        $products = array();
-        $products = json_encode($products);
-        setcookie('cart', $products, time() + 3600 * 24 * 3, "/");
+        $cart = [];
+    } else {
+        //DECODIFICANDO O CART PARA MANIPULAR
+        $cart = json_decode($_COOKIE['cart']);
     }
 
-    $products = json_decode($_COOKIE['cart']);
+    //RECOLHENDO DADOS DO FORMULARIO DE PRODUTO    
+    $produto = new CartProduct();
+    $produto->product = $_POST['idProduto'];
+    $produto->cor = $_POST['cor'];
+    $produto->tamanho = $_POST['tamanho'];
+    $produto->quantidade = $_POST['quantidade'];
 
+    $indices_servicos = $_POST['servicos']; //checkbox hidden
 
-    $produto->setCor($conn, $_POST['cor']);
-    $produto->setCostura($conn, $_POST['costura']);
-    $produto->setTamanho($conn, $_POST['tamanho']);
+    foreach ($indices_servicos as $num) {
+        array_push(
+            $produto->servicos,
+            array(
+                "servico"   => $_POST["$num-select-servico"],
+                "posicao"   => $_POST["$num-select-posicao"],
+                "tamanho"   => $_POST["$num-select-tamanho"]
+            )
+        );
+    }
 
-    array_push($products, $produto);
-    setcookie('cart', $products, time() + 3600 * 24 * 3, "/");
+    array_push($cart, $produto);
+    $cart = json_encode($cart);
+    setcookie('cart', $cart, time() + 3600 * 24 * 3, "/");
+
+    $msg = "Produto adicionado ao carrinho com sucesso!";
+    header("location: ../catalogo.php?msg={$msg}");
 }
