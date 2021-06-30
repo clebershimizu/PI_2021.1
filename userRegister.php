@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
 
     <title>Cadastro</title>
 
@@ -187,7 +189,7 @@
             document.getElementById("passwordStrength").className = "strength" + score;
         }
     </script>
-
+<?php include "view/footer.php"; ?>
 </body>
 
 

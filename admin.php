@@ -18,13 +18,10 @@ if (!isset($_SESSION['loggedAdmin'])) {
     <title>Dashboard</title>
 
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet"> -->
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+    
     <style>
-        /* body {
-            font-family: 'Nunito', sans-serif;
-            padding: 8rem 8rem 8rem 8rem;
-        } */
 
         .andamento {
             background: rgba(76, 175, 80, 0.1);

@@ -1,3 +1,18 @@
+<?php 
+
+require_once 'model/M_connection.php';
+$dbConn = new Connection();
+$conn = $dbConn->connect();
+
+$query = 'SELECT * FROM produto';
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$conn->close();
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -17,6 +32,9 @@
 
     <!-- Custom styles for this template -->
     <link href="lib/bootstrap/dist/css/carousel.css" rel="stylesheet">
+
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
 
 
     <!-- CSS temporário para os placeholders (imagens em cinza) -->
@@ -51,8 +69,8 @@
             <!--ROW = CONTAINER DE COLUNAS... AQUI DENTRO ELAS SE AJEITAM SOZINHAS, SEGUNDO OS PARAMETROS DE TELA (rows-cols-screensize-qtde por linha)-->
             <div class="row m-auto row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6">
 
-                <!--LOOP EM PHP-->
-                <?php for ($i = 0; $i < 20; $i++) { ?>
+                <!--LOOP MOSTRANDO TODOS OS PRODUTOS REGISTRADOS NO BANCO COM NOME E IMAGEM-->
+                <?php while ($produto = $result->fetch_assoc()) { ?>
 
                     <!--ESTRUTURA DE UM CARD-->
                     <div class="col mb-4">
@@ -63,17 +81,13 @@
                         que decide qual imagem chamar. Quando tiver tudo integrado, só puxa da banco mesmo 
                         (lá vai estar armazenado um link com o repositorio de imagens, um imgur da vida)-->
 
-                            <img src="img/prod<?= $i % 5 ?>.jpg" alt="placeholder" class="card-img-top w-100">
+                            <img src="img/<?= $produto['image_url'] ?>" alt="placeholder" class="card-img-top w-100">
 
                             <!--CORPO DO CARD-->
                             <div class="card-body d-flex flex-column">
-                                <h5 class="text-info"> <?php echo "Produto #{$i}" ?></h5>
-                                <p class="card-text">Estes produtos são todos iguais, dentro de um FOR. A estrutura do grid
-                                    permite copiar inúmeros elementos aqui dentro! ("cols" dentro da "row")</p>
-
+                                <h5 class="text-info"> <?php echo $produto['tipo_peca'] ?></h5>
                                 <div class="mt-auto">
-                                    <p class="card-text fw-bold">Tamanhos: <br> Cores: <br></p>
-                                    <button type="button" class="btn btn-sm w-100 btn-info">Pedir Cotação</button>
+                                    <a href="product.php?id=<?=$produto['id']?>" class="btn btn-sm w-100 btn-info" role="button">Adicionar ao Carrinho</a>
                                 </div>
                             </div>
 

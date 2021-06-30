@@ -19,7 +19,9 @@ if (!isset($_SESSION['loggedAdmin'])) {
 
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+    
     <style>
         .logo {
             padding: 2rem 0 2rem 0;

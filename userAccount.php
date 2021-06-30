@@ -45,6 +45,9 @@ if ($ordersCheck->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" type="text/css" href="lib/bootstrap/exemplos-do-bootstrap/sign-in/signin.css" /> -->
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+
     <title>Conta</title>
     <script>
         var d = document
@@ -241,7 +244,7 @@ if ($ordersCheck->num_rows > 0) {
             document.getElementById("passwordStrength").className = "strength" + score;
         }
     </script>
-
+<?php include "view/footer.php"; ?>
 </body>
 
 

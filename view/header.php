@@ -11,20 +11,24 @@ if (isset($_SESSION["loggedUser"])) {
     $loggedUserName = $_SESSION["nameUser"];
     $loggedUserId = $_SESSION["idUser"];
   }
-  if (isset($_SESSION["loggedAdmin"])) {
+}
+if (isset($_SESSION["loggedAdmin"])) {
+  if ($_SESSION["loggedAdmin"] == True) {
     $logado = True;
   }
 }
+
 ?>
 <header class="sticky-top">
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand" href="index.php">GMS Uniformes</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse py-3" id="navbarCollapse">
-        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+        <!-- <ul class="navbar-nav ms-auto mb-2 mb-md-0 "> -->
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0 d-flex justify-content-center align-items-center">
           <?php if (isset($_SESSION["loggedAdmin"])) { ?>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="index.php#">Home</a>
@@ -43,10 +47,11 @@ if (isset($_SESSION["loggedUser"])) {
               <a class="nav-link active" aria-current="page" href="index.php#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="index.php#sobre">Sobre</a>
+              <a class="nav-link" href="catalogo.php">Catálogo</a>
             </li>
+            <?php if(!isset($_SESSION["loggedUser"])) { ?>
             <li class="nav-item">
-              <a class="nav-link" href="catalogo.php">Produtos</a>
+              <a class="nav-link" href="index.php#sobre">Sobre</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="index.php#parceiros">Parceiros</a>
@@ -54,6 +59,7 @@ if (isset($_SESSION["loggedUser"])) {
             <li class="nav-item">
               <a class="nav-link" href="index.php#contato">Contato</a>
             </li>
+            <?php } ?>
           <?php } ?>
 
           <!-- <li class="nav-item">
@@ -70,8 +76,11 @@ if (isset($_SESSION["loggedUser"])) {
 
             <?php } else {
             if (isset($_SESSION["loggedUser"])) { ?>
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link" href="userAccount.php">Bem Vindo(a), <?= $loggedUserName ?></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="carrinho.php"><span style="font-size:20pt" alt="carrinho" class="oi" data-glyph="cart"></span></a>
               </li>
             <?php } else { ?>
               <li class="nav-item">
@@ -79,7 +88,7 @@ if (isset($_SESSION["loggedUser"])) {
               </li>
             <?php } ?>
             <li class="nav-item">
-              <a class="nav-link" href="control/C_logoutUser.php">Logout</a>
+              <a class="nav-link" href="control/C_logoutUser.php"><span style="font-size:20pt" aria-label="logout" alt="logout" class="oi" data-glyph="account-logout"></span></a>
             </li>
           <?php } ?>
         </ul>
@@ -88,9 +97,16 @@ if (isset($_SESSION["loggedUser"])) {
   </nav>
 </header>
 <?php
+
 //ERROR CATCHER
-if(isset($_GET['erro'])) { ?>
-        <div class="alert alert-warning" role="alert">
-        <?php echo $_GET['erro'];?> 
-        </div>
+  if(isset($_GET['erro'])) { ?>
+      <div class="alert alert-danger" role="alert">
+      <?php echo $_GET['erro'];?> 
+      </div>
+  <?php }
+
+    if(isset($_GET['msg'])) { ?>
+      <div class="alert alert-info" role="alert">
+      <?php echo $_GET['erro'];?> 
+      </div>
     <?php }

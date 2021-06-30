@@ -26,10 +26,7 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     $_SESSION["idUser"]     = $user["id"];
     $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);
 
-    if (!isset($_COOKIE['cart'])) {
-      $cart = [];
-      @setcookie('cart', $cart, time() + 3600 * 24 * 3, "/");
-    } else {
+    if (isset($_COOKIE['cart'])) {
       setcookie('cart', $_COOKIE['cart'], time() + 3600 * 24 * 3, "/");
     }
   }
@@ -73,9 +70,9 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     }
 
     .img-carousel {
-      /*height: 100%;*/
+      width: 100%;
       height: 30.5vh;
-      object-fit: contain;
+      object-fit: scale-down;
     }
   </style>
 
@@ -287,20 +284,21 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     <!-- POPUP ALERTA DE CONSENTIMENTO -->
 
     <?php if (!isset($_COOKIE['aceito'])) { ?>
-      <div id="lawmsg" class="container alert alert-info alert-dismissible h6 fade show fixed-bottom" role="alert">
-        <div class="row">
-          <div class="col-11">
-
-            We use cookies on this website to distinguish you from other users. We use this data to enhance your experience and for targeted advertising. &nbsp; By continuing to use this website you consent to our use of cookies. &nbsp; For more information, please see our &nbsp;
-            <a href="privacy.html" target="_blank">Cookie Policy</a>.
-            <br>
+      <div id="lawmsg" class="container alert alert-info h6 fade show fixed-bottom" role="alert">
+        <div class="d-flex flex-row">
+          <div >
+              We use cookies on this website to distinguish you from other users.
+              We use this data to enhance your experience and for targeted advertising.
+              &nbsp; By continuing to use this website you consent to our use of cookies.
+              &nbsp; For more information, please see our &nbsp;
+              <a href="privacy.html" target="_blank">Cookie Policy</a>.
           </div>
-          <div class="col-1">
-            <button id="btn-cookie-accept" type="button" class="btn w-100 btn-sm btn-info">Aceitar</button>
-
-            <button id="btn-cookie-close" type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+          <div class="d-flex flex-column align-items-stretch ms-2 ">
+            <button id="btn-cookie-close" type="button" class="btn-close align-self-end mb-2" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true"></span>
             </button>
+            <button id="btn-cookie-accept" type="button" class="btn btn-sm btn-info mt-auto">Aceitar</button>
+            
           </div>
         </div>
       </div>

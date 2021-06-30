@@ -3,7 +3,7 @@
 session_start();
 if (!isset($_SESSION['loggedUser'])) {
     $msg = "Você só pode adicionar um item ao carrinho se estiver logado";
-    header("Location: catalogo.php?erro={$msg}");
+    header("Location: login.php?erro={$msg}");
 }
 
 require_once 'model/M_connection.php';
@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
 }
 
 
-$result = $conn->query("SELECT tipo_peca, tecido FROM produto WHERE id = {$idProduto}");
+$result = $conn->query("SELECT tipo_peca, tecido, image_url FROM produto WHERE id = {$idProduto}");
 $produto = $result->fetch_assoc();
 
 $cores =    $conn->query("SELECT * FROM cor");
@@ -47,6 +47,8 @@ $costuras = $conn->query("SELECT * FROM costura");
     <title>Adicionar Produto</title>
 
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS para ícones -->
+    <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
     <script>
 
     </script>
@@ -161,7 +163,7 @@ $costuras = $conn->query("SELECT * FROM costura");
                     <!-- IMAGEM DO PRODUTO, AINDA NAO DINAMICO -->
 
                     <div class="w-50">
-                        <img src="img/prod0.jpg" alt="Imagem do produto" class="img-format">
+                        <img src="img/<?=$produto['image_url']?>" alt="Imagem do produto" class="img-format">
                     </div>
 
                     <!-- COR DO PRODUTO -->
@@ -329,6 +331,7 @@ $costuras = $conn->query("SELECT * FROM costura");
             }
         }
     </script>
+    <?php include "view/footer.php"; ?>
 </body>
 
 

@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $produto->cor = $_POST['cor'];
     $produto->tamanho = $_POST['tamanho'];
     $produto->quantidade = $_POST['quantidade'];
+    $produto->costura = $_POST['costura'];
 
     $indices_servicos = $_POST['servicos']; //checkbox hidden
 

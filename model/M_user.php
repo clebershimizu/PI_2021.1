@@ -164,7 +164,7 @@ class User
     //FUNÇÃO PARA VERIFICAR LOGIN
     function searchLogin($conn)
     {
-        $query = 'SELECT * FROM user WHERE email LIKE ? AND user_password LIKE ? LIMIT 1';
+        $query = 'SELECT * FROM user WHERE email LIKE ? AND user_password LIKE ? AND available = 1 LIMIT 1';
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("ss", $this->getEmail(), $this->getPassword());
         $stmt->execute();
