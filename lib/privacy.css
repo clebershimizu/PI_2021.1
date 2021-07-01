@@ -1,6 +1,7 @@
 .container{
   display: flex-center;
 }
+
 h2 {
   padding: 1.6em 0 1.6em 0; 
 }
@@ -8,8 +9,9 @@ nav {
   padding: 0 0 0.6em 0; 
 }
 .body{
+  /* padding: 2rem 2rem 2rem 2rem; */
   background-color: #fbfdfd;
-  font-family: "Nunito";
+  font-family: 'Nunito', sans-serif;
 }
 .bg-custom{
   background-color:#130f40;
@@ -21,15 +23,14 @@ nav {
   right: 0;
   border-radius: 4px;
 }
-.fas{
-  cursor: pointer;
-  font-size: 24px;
+.logo {
+  padding: 2rem 0 2rem 0;
+  display: flex;
+  max-width: 100%;
+  justify-content: flex-end;
 }
-.buttons-place{
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-gap: 16px;
-}
+
 p{
-  font-size: 14px;
+  font-size: 16px;
+  text-align: justify;
 }
