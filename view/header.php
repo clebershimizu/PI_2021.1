@@ -49,16 +49,16 @@ if (isset($_SESSION["loggedAdmin"])) {
             <li class="nav-item">
               <a class="nav-link" href="catalogo.php">Catálogo</a>
             </li>
-            <?php if(!isset($_SESSION["loggedUser"])) { ?>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#sobre">Sobre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#parceiros">Parceiros</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.php#contato">Contato</a>
-            </li>
+            <?php if (!isset($_SESSION["loggedUser"])) { ?>
+              <li class="nav-item">
+                <a class="nav-link" href="index.php#sobre">Sobre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.php#parceiros">Parceiros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.php#contato">Contato</a>
+              </li>
             <?php } ?>
           <?php } ?>
 
@@ -99,14 +99,44 @@ if (isset($_SESSION["loggedAdmin"])) {
 <?php
 
 //ERROR CATCHER
-  if(isset($_GET['erro'])) { ?>
-      <div class="alert alert-danger" role="alert">
-      <?php echo $_GET['erro'];?> 
+if (isset($_GET['erro'])) { ?>
+  <div id="popup-alert" class="alert alert-info">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <?php echo $_GET['erro']; ?>
       </div>
-  <?php }
 
-    if(isset($_GET['msg'])) { ?>
-      <div class="alert alert-info" role="alert">
-      <?php echo $_GET['erro'];?> 
+      <div class="align-self-center">
+        <button id="btn-alert-close" class="btn-close">
       </div>
-    <?php }
+    </div>
+  </div>
+  <script>
+    var d = document
+    d.getElementById('btn-alert-close')
+      .addEventListener('click', () => {
+        d.getElementById('popup-alert').hidden = true
+      });
+  </script>
+<?php }
+
+if (isset($_GET['msg'])) { ?>
+  <div id="popup-msg" class="alert alert-info">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <?php echo $_GET['msg']; ?>
+      </div>
+
+      <div class="align-self-center">
+        <button id="btn-msg-close" class="btn-close">
+      </div>
+    </div>
+  </div>
+  <script>
+    var d = document
+    d.getElementById('btn-msg-close')
+      .addEventListener('click', () => {
+        d.getElementById('popup-msg').hidden = true
+      });
+  </script>
+<?php } ?>

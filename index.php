@@ -1,9 +1,12 @@
 <?php
 session_start();
 
+//VERIFICAÇÃO DO COOKIE DE MEMORIZAÇÃO DE LOGIN
 
 if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
+
   $id = $_COOKIE['id'];
+
   require_once 'model/M_connection.php';
   $dbConn = new Connection();
   $conn = $dbConn->connect();
@@ -12,6 +15,7 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
   $userTemp->preencher($conn, $id);
 
   $result = $userTemp->searchLogin($conn);
+
   if ($result->num_rows > 0) {
     //LOGADO
     $user = $result->fetch_assoc();
@@ -26,6 +30,10 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     $_SESSION["idUser"]     = $user["id"];
     $_SESSION["nameUser"]   = aes_256("decrypt", $user["name"]);
 
+    //RENOVA O COOKIE DE LOGIN
+    setcookie("id", $user["id"], time() + 3600 * 24 * 3, "/");
+
+    //RENOVA O COOKIE DO CART SE EXISTIR
     if (isset($_COOKIE['cart'])) {
       setcookie('cart', $_COOKIE['cart'], time() + 3600 * 24 * 3, "/");
     }
@@ -286,37 +294,24 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
     <?php if (!isset($_COOKIE['aceito'])) { ?>
       <div id="lawmsg" class="container alert alert-info h6 fade show fixed-bottom" role="alert">
         <div class="d-flex flex-row">
-          <div >
-              We use cookies on this website to distinguish you from other users.
-              We use this data to enhance your experience and for targeted advertising.
-              &nbsp; By continuing to use this website you consent to our use of cookies.
-              &nbsp; For more information, please see our &nbsp;
-              <a href="privacy.html" target="_blank">Cookie Policy</a>.
+          <div>
+            Usamos cookies neste site para distingui-lo de outros usuários.
+            Usamos esses dados para aprimorar sua experiência e para publicidade direcionada.
+            &nbsp; Ao continuar a usar este site, você concorda com o uso de cookies.
+            &nbsp; Para obter mais informações, consulte nossa &nbsp;
+            <a href="privacy.php" target="_blank">Política de Privacidade</a>.
           </div>
           <div class="d-flex flex-column align-items-stretch ms-2 ">
             <button id="btn-cookie-close" type="button" class="btn-close align-self-end mb-2" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true"></span>
             </button>
             <button id="btn-cookie-accept" type="button" class="btn btn-sm btn-info mt-auto">Aceitar</button>
-            
           </div>
         </div>
       </div>
       <!-- </div> -->
     <?php } ?>
-    <!---->
-    <script>
-      var d = document
-      d.getElementById('btn-cookie-accept')
-        .addEventListener('click', () => {
-          d.getElementById('lawmsg').hidden = true
-          d.cookie = 'aceito=true'
-        });
-      d.getElementById('btn-cookie-close')
-        .addEventListener('click', () => {
-          d.getElementById('lawmsg').hidden = true
-        });
-    </script>
+
 
   </main>
 
@@ -324,6 +319,20 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
   <?php include "view/footer.php"; ?>
 
   <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!---->
+  <script>
+    var d = document
+    d.getElementById('btn-cookie-accept')
+      .addEventListener('click', () => {
+        d.getElementById('lawmsg').style.display = "none"
+        d.cookie = 'aceito=true'
+      });
+    d.getElementById('btn-cookie-close')
+      .addEventListener('click', () => {
+        d.getElementById('lawmsg').style.display = "none"
+      });
+  </script>
 
 
 </body>

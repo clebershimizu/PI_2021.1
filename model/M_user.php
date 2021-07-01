@@ -198,7 +198,7 @@ class User
     }
     function deleteUserData($conn)
     {
-        $query =    "DELETE FROM user WHERE id = ?";
+        $query =    "UPDATE user SET available = 0 WHERE id = ?";
         $stmt = $conn->prepare($query);
         @$stmt->bind_param("i", $this->getId());
         $stmt->execute();

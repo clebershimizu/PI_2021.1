@@ -3,7 +3,7 @@
 session_start();
 if (!isset($_SESSION['loggedUser'])) {
     $msg = "Você só pode visitar o carrinho se estiver logado!";
-    header("Location: login.php?erro={$msg}");
+    header("Location: userLogin.php?erro={$msg}");
     exit();
 }
 
@@ -11,11 +11,11 @@ require_once 'model/M_connection.php';
 $dbConn = new Connection();
 $conn = $dbConn->connect();
 
-if(isset($_COOKIE['cart'])) {
+if (isset($_COOKIE['cart'])) {
     $cart = json_decode($_COOKIE['cart']);
 
     //var_dump($cart);
-}else{
+} else {
     $msg = "Você não possui produtos no carrinho! Comece pelo catálogo!";
     //header("Location: login.php?erro={$msg}");
     //exit();
@@ -62,9 +62,9 @@ if(isset($_COOKIE['cart'])) {
             <div class="col-auto me-auto">
                 <h1>Seu pedido</h1>
             </div>
-            <div class="col-auto ms-auto"> 
-                <a class="btn btn-primary" href="/product.php">Adicionar mais produtos</a>
-                <a class="btn btn-success" href="/product.php">Solicitar Orçamento</a>
+            <div class="col-auto ms-auto">
+                <a class="btn btn-primary" href="catalogo.php">Adicionar mais produtos</a>
+                <a class="btn btn-success" href="control/C_registerOrder.php">Solicitar Orçamento</a>
             </div>
         </div>
 
@@ -78,15 +78,15 @@ if(isset($_COOKIE['cart'])) {
         <div class="row m-auto row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xxl-3">
 
             <!--LOOP EM PHP-->
-            <?php 
-            foreach($cart as $prod) { 
+            <?php
+            foreach ($cart as $prod) {
 
                 //var_dump($prod);
 
                 /*TRANSFORMAR OS IDS DO CART EM TEXTO...
                 INFELIZMENTE, O CART NAO TEM CADASTRADO NO BANCO, ENTAO NAO DA PARA UTILIZAR A CLASSE PEDIDO_PRODUTO
                 MAS É BASICAMENTE ISSO, TRAZER OS VALORES DE STRING, COM BASE NOS IDS NO CART.*/
-                
+
                 //DEFINIR O PRODUTO E O TECIDO
                 $query = 'SELECT tipo_peca, tecido, image_url FROM produto WHERE id = ?';
                 $stmt = $conn->prepare($query);
@@ -97,7 +97,7 @@ if(isset($_COOKIE['cart'])) {
 
                 $produto = $search['tipo_peca'];
                 $tecido = $search['tecido'];
-                $imagem= $search['image_url'];
+                $imagem = $search['image_url'];
 
                 //DEFINIR TAMANHO
                 $query = 'SELECT t.desc FROM tamanho t WHERE id = ?';
@@ -131,37 +131,37 @@ if(isset($_COOKIE['cart'])) {
 
                 //DEFINIR A QUANTIDADE ... só traduz pra uma variavel mais legal
                 $quantidade = $prod->quantidade;
-                
-                
-                ?>
+
+
+            ?>
 
                 <!--ESTRUTURA DE UM CARD-->
                 <div class="col mb-4">
-                    <div class="card shadow-sm h-100">                     
+                    <div class="card shadow-sm h-100">
 
                         <!--CORPO DO CARD-->
                         <div class="card-body row row-cols-2 align-items-center">
                             <!-- COLUNA DA IMAGEM -->
                             <div class="col">
-                                <img src="img/<?=$imagem?>" alt="placeholder" class="card-img-top">
+                                <img src="img/<?= $imagem ?>" alt="placeholder" class="card-img-top">
                             </div>
                             <!-- COLUNA DAS INFORMAÇÕES DO PRODUTO -->
                             <div class="col">
                                 <!-- TITULO -->
-                                <h6 class="text-info"><?=mb_strtoupper($produto, 'UTF-8')?></h6>
+                                <h6 class="text-info"><?= mb_strtoupper($produto, 'UTF-8') ?></h6>
 
                                 <!-- INFOS -->
-                                <p class="card-text">Tecido: <?=mb_strtoupper($tecido, 'UTF-8')?><br>
-                                Tamanho: <?=mb_strtoupper($tamanho, 'UTF-8')?><br>
-                                Cor: <?=mb_strtoupper($cor, 'UTF-8')?><br>
-                                Costura: <?=mb_strtoupper($costura, 'UTF-8')?><br>
-                                Quantidade: <?=mb_strtoupper($quantidade, 'UTF-8')?></p>
+                                <p class="card-text">Tecido: <?= mb_strtoupper($tecido, 'UTF-8') ?><br>
+                                    Tamanho: <?= mb_strtoupper($tamanho, 'UTF-8') ?><br>
+                                    Cor: <?= mb_strtoupper($cor, 'UTF-8') ?><br>
+                                    Costura: <?= mb_strtoupper($costura, 'UTF-8') ?><br>
+                                    Quantidade: <?= mb_strtoupper($quantidade, 'UTF-8') ?></p>
 
                                 <!-- SERVICOS -->
                                 <select class="form-control form-control-sm">
                                     <option selected>Serviços</option>
 
-                                    <?php foreach($prod->servicos as $serv){
+                                    <?php foreach ($prod->servicos as $serv) {
                                         //RECOLHER OS VALORES DOS IDS
 
                                         //BUSCAR TAMANHO, DESC TAMANHO E NOME DO SERVICO
@@ -185,11 +185,11 @@ if(isset($_COOKIE['cart'])) {
                                         $search = $stmt->get_result();
                                         $search = $search->fetch_assoc();
 
-                                        $posicao = $search['descricao'];?>
+                                        $posicao = $search['descricao']; ?>
 
-                                        <option disabled><?=$servico?> - <?=$tamanho?>(<?=$desc_tamanho?>)</option>
+                                        <option disabled><?= $servico ?> - <?= $tamanho ?>(<?= $desc_tamanho ?>)</option>
 
-                                        <?php } ?>
+                                    <?php } ?>
 
                                 </select>
                             </div>
@@ -204,7 +204,7 @@ if(isset($_COOKIE['cart'])) {
         </div>
 
         <div>
-            
+
 
         </div>
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'model/M_connection.php';
 $dbConn = new Connection();
@@ -39,11 +39,6 @@ $conn->close();
 
     <!-- CSS temporário para os placeholders (imagens em cinza) -->
     <style>
-        /*diminui o tamanho dos textos do card, de maneira responsiva*/
-        .card-body p {
-            font-size: 0.7em;
-        }
-
         /*crucial para as imagens ficarem certas*/
         .card-img-top {
             width: 100%;
@@ -60,7 +55,7 @@ $conn->close();
 
     <main>
 
-        <div class="container-fluid">
+        <div class="container-fluid pb-5">
 
             <div class="py-5 text-center">
                 <h2>Produtos</h2>
@@ -86,8 +81,9 @@ $conn->close();
                             <!--CORPO DO CARD-->
                             <div class="card-body d-flex flex-column">
                                 <h5 class="text-info"> <?php echo $produto['tipo_peca'] ?></h5>
+                                <p class="text-dark">Tecido: <?= mb_strtoupper($produto['tecido'], 'UTF-8') ?></p>
                                 <div class="mt-auto">
-                                    <a href="product.php?id=<?=$produto['id']?>" class="btn btn-sm w-100 btn-info" role="button">Adicionar ao Carrinho</a>
+                                    <a href="product.php?id=<?= $produto['id'] ?>" class="btn btn-sm w-100 btn-info" role="button">Adicionar ao Carrinho</a>
                                 </div>
                             </div>
 

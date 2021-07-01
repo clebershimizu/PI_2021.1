@@ -6,7 +6,7 @@ class Pedido
     private $id;
     private $user;
     private $date;
-    private $description;
+    private $description = "Sem descricao";
     private $status;
     private $custo_orcado;
 
@@ -38,13 +38,14 @@ class Pedido
 
     // =-=-= MÉTODOS ESTÁTICOS =-=-=
 
-    public static function getPedidosNaoOrcados($conn)
+    public static function getPedidos($conn, $status)
     {
 
-        //Pegar todos os pedidos sem orçamento
+        //Pegar todos os pedidos, dependendo do status
 
-        $query = 'SELECT id FROM pedido WHERE status = 0';
+        $query = 'SELECT id FROM pedido WHERE status = ?';
         $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $status);
         $stmt->execute();
         $ids = $stmt->get_result();
 
@@ -59,38 +60,7 @@ class Pedido
 
             while ($id = $ids->fetch_assoc()) {
                 $pedido = new Pedido();
-                $pedido->preencher($conn, $id);
-                array_push($array, $pedido);
-            }
-
-            return $array;
-        } else {
-            return 0;
-        }
-    }
-
-    public static function getPedidosOrcados($conn)
-    {
-
-        //Pegar todos os pedidos sem orçamento
-
-        $query = 'SELECT id FROM pedido WHERE status = 1';
-        $stmt = $conn->prepare($query);
-        $stmt->execute();
-        $ids = $stmt->get_result();
-
-        if ($ids->num_rows > 0) {
-
-            // PARA CADA PEDIDO NÃO ORÇADO:
-            // 1. Construir um Objeto de Pedido
-            // 2. Preencher este Objeto com infos de um ID já existente;
-            // 3. Anexar em Array, que será retornado
-
-            $array = [];
-
-            while ($id = $ids->fetch_assoc()) {
-                $pedido = new Pedido();
-                $pedido->preencher($conn, $id);
+                $pedido->preencher($conn, $id['id']);
                 array_push($array, $pedido);
             }
 
@@ -122,7 +92,9 @@ class Pedido
     function setUser($conn, $id)
     {
         require_once "M_user.php";
-        $this->user = new User($conn, $id);
+        $user = new User();
+        $user->preencher($conn, $id);
+        $this->user = $user;
     }
 
     //DATE
@@ -232,5 +204,96 @@ class Pedido
         }
 
         return $total;
+    }
+
+    function criarPedido($conn)
+    {
+
+        $query =   'INSERT into pedido (fk_user_id,
+                                        date,
+                                        description,
+                                        status)
+                                VALUES (?,?,?,?)';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("issi", ($this->getUser())->getId(), $this->getDate(), $this->getDescription(), $this->getStatus());
+        $stmt->execute();
+
+        //PEGAR O ULTIMO PEDIDO CADASTRADO E ATRIBUIR À ESTE OBJETO DE PEDIDO
+
+        $query =   'SELECT id FROM pedido WHERE fk_user_id = ? order by id desc limit 1';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", ($this->getUser())->getId());
+        $stmt->execute();
+        $search = $stmt->get_result();
+        $pedido = $search->fetch_assoc();
+
+        $this->setId($pedido['id']);
+    }
+
+    function cadastrarProduto($conn, $prod)
+    {
+
+        /* CADASTRA NA TABELA PEDIDO PRODUTO, E DEPOIS OS SERVICOS ADEQUADAMENTE
+
+        TABELA PEDIDO_PRODUTO
+        id - (não é inserido)
+	    fk_pedido_id 
+	    fk_produto_id
+	    qtde_produtos
+	    fk_costura_id
+	    fk_cor_id
+	    fk_tamanho_id 
+        */
+        $query =   'INSERT into pedido_produto (fk_pedido_id,
+                                                fk_produto_id,
+                                                qtde_produtos,
+                                                fk_costura_id,
+                                                fk_cor_id,
+                                                fk_tamanho_id)
+                                VALUES (?,?,?,?,?,?)';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("iiiiii", $this->getId(), $prod->product, $prod->quantidade, $prod->costura, $prod->cor, $prod->tamanho);
+        $stmt->execute();
+
+        //PEGAR O ULTIMO PEDIDO_PRODUTO CADASTRADO
+
+        $query =   'SELECT id FROM pedido_produto WHERE fk_pedido_id = ? order by id desc limit 1';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("i", $this->getId());
+        $stmt->execute();
+        $search = $stmt->get_result();
+        $pedido_produto = $search->fetch_assoc();
+        $produto = $pedido_produto['id'];
+
+        /*
+        CAMPOS DA TABELA PEDIDO_PRODUTO_SERVICO
+            id
+            fk_servico_id
+            fk_pedido_produto_id
+            fk_posicao_id
+            comment
+        */
+
+        foreach ($prod->servicos as $servico) {
+
+            $comment = "Sem comentários";
+
+            $query = 'INSERT INTO pedido_produto_servico   (fk_servico_id,
+                                                            fk_pedido_produto_id,
+                                                            fk_posicao_id,
+                                                            comment)
+                                                            VALUES ( ? , ? , ? , ? )';
+            $stmt = $conn->prepare($query);
+            @$stmt->bind_param("iiis", $servico->tamanho, $produto, $servico->posicao, $comment);
+            $stmt->execute();
+        }
+    }
+    function aferirOrcamento($conn, $comments)
+    {
+        $status = 1;
+        $query =    'UPDATE pedido SET custo_orcado = ?, comment = ?, status = ? WHERE id = ?';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("dsii", $this->getCusto_Orcado(), $comments, $status, $this->getId());
+        $stmt->execute();
     }
 }

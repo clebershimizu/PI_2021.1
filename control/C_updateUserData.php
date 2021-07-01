@@ -22,9 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $user->setNumber($_POST["number"]);
         $user->setComplement($_POST["complemento"]);
 
+        if (!$user->haveOrders($conn)) {
+            $msg = "Informações alteradas com sucesso";
+        } else {
+            $msg = "Não é possível alterar o seu CNPJ / CPF enquanto existir um pedido pago em andamento. As outras informações foram alteradas com sucesso";
+        }
+
         $user->updateUserData($conn);
 
-        header("Location: ../userAccount.php");
+        header("Location: ../userAccount.php?msg={$msg}");
     } catch (Exception $e) {
         $msg = $e->getMessage();
         header("Location: ../userAccount.php?erro={$msg}");

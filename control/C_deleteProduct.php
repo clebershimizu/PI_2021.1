@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $prod->setIdProduto($_GET['id']);
 
     $prod->deactivateProduct($conn);
-    $msg="Produto Excluído com Sucesso!";
+    $msg = "Produto Excluído com Sucesso!";
     header("Location: ../adminProduto.php?alert={$msg}");
-
 }
