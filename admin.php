@@ -118,7 +118,7 @@ if (!isset($_SESSION['loggedAdmin'])) {
                             </div>
 
                             <div class="d-flex flex-row">
-                                <h3>Pedido # <?= $idPedido ?></h3>
+                                <h3>Produtos</h3>
                                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#pedido-collapsible-<?= $idPedido ?>" aria-expanded="false" aria-controls="pedido-collapsible-<?= $idPedido ?>">
                                     Expandir
                                 </button>
@@ -126,7 +126,6 @@ if (!isset($_SESSION['loggedAdmin'])) {
 
                             <div id="produto-collapsible-<?= $idPedido ?>" class="collapse">
                                 <div id="produtos-<?= $pedido->getId() ?>">
-                                    <h3>Produtos</h3>
 
                                     <?php
 
