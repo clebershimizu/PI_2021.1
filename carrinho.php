@@ -187,7 +187,7 @@ if (isset($_COOKIE['cart'])) {
 
                                         $posicao = $search['descricao']; ?>
 
-                                        <option disabled><?= $servico ?> - <?= $tamanho ?>(<?= $desc_tamanho ?>)</option>
+                                        <option disabled><?= $servico ?> - <?= $posicao ?> - <?= $tamanho ?>(<?= $desc_tamanho ?>)</option>
 
                                     <?php } ?>
 
