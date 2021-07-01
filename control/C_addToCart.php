@@ -39,14 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $indices_servicos = $_POST['servicos']; //checkbox hidden
 
     foreach ($indices_servicos as $num) {
-        array_push(
-            $produto->servicos,
-            array(
-                "servico"   => $_POST["$num-select-servico"],
-                "posicao"   => $_POST["$num-select-posicao"],
-                "tamanho"   => $_POST["$num-select-tamanho"]
-            )
-        );
+
+        if(isset($_POST[$num."-select-servico"])){
+            array_push(
+                $produto->servicos,
+                array(
+                    "servico"   => $_POST["$num-select-servico"],
+                    "posicao"   => $_POST["$num-select-posicao"],
+                    "tamanho"   => $_POST["$num-select-tamanho"]
+                )
+            );
+        }
     }
 
     array_push($cart, $produto);

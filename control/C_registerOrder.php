@@ -35,5 +35,5 @@ try {
     exit();
 }
 $msg = ("Orçamento solicitado com sucesso");
-header("Location: catalogo.php?msg={$msg}");
+header("Location: ../catalogo.php?msg={$msg}");
 exit();
