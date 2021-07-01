@@ -113,16 +113,16 @@ $prod->preencherProduto($conn, $id);
         <form action="control/C_updateProduct.php?id=<?= $id ?>" method="POST">
             <div class="col-10 col-xs-10 col-sm-8 col-md-7 col-lg-7 col-xl-6">
                 <label for="description">Descrição</label> <br>
-                <input type="text" name="description" class="form-control" value="<?= $prod->getTipoPeca() ?>">
+                <input required type="text" name="description" class="form-control" value="<?= $prod->getTipoPeca() ?>">
                 <br>
                 <label for="tecido">Tecido</label> <br>
-                <input type="text" name="tecido" class="form-control" value="<?= $prod->getTecido() ?>">
+                <input required type="text" name="tecido" class="form-control" value="<?= $prod->getTecido() ?>">
                 <br>
                 <label for="base_cost">Custo Base</label> <br>
-                <input type="number" name="base_cost" class="form-control" value="<?= $prod->getBaseCost() ?>">
+                <input required type="number" name="base_cost" class="form-control" value="<?= $prod->getBaseCost() ?>">
                 <br>
                 <label for="picture">Imagem</label> <br>
-                <input type="text" name="picture" class="form-control" value="<?= $prod->getImgUrl() ?>">
+                <input required type="text" name="picture" class="form-control" value="<?= $prod->getImgUrl() ?>">
                 <br>
 
                 <div id="posicoes">

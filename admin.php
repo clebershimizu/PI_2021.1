@@ -7,6 +7,12 @@ if (!isset($_SESSION['loggedAdmin'])) {
     exit();
 }
 
+require_once 'model/M_connection.php';
+require_once 'model/M_pedido.php';
+
+$dbConn = new Connection();
+$conn = $dbConn->connect();
+
 ?>
 
 <!DOCTYPE html>
@@ -22,21 +28,58 @@ if (!isset($_SESSION['loggedAdmin'])) {
     <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
 
     <style>
-        .andamento {
-            background: rgba(76, 175, 80, 0.1);
-        }
-
+        /* ESTILOS DO ACCORDION */
+        /* ESTILOS PARA OS PEDIDOS PENDENTES (VERMELHO) */
         .pendentes {
-            background: rgba(235, 127, 94, 0.1);
+            background: rgba(220, 53, 69, 0.06);
         }
 
-        .logo {
-            padding: 2rem 0 2rem 0;
-            display: flex;
-            max-width: 100%;
-            justify-content: flex-end;
+        .pendentes .accordion-button:focus {
+            border-color: rgb(220, 53, 69);
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2);
+        }
+
+        .pendentes .accordion-button[aria-expanded="true"] {
+            background-color: rgb(220, 53, 69, 0.2);
+        }
+
+
+        /* ESTILOS PARA OS PEDIDOS ORÇADOS (AMARELO) */
+        .orcados {
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .orcados .accordion-button:focus {
+            border-color: rgb(255, 193, 7);
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.2);
+        }
+
+        .orcados .accordion-button[aria-expanded="true"] {
+            background-color: rgb(255, 193, 7, 0.2);
+        }
+
+
+        /* ESTILOS PARA OS PEDIDOS PAGOS (VERDE) */
+        .pagos {
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .pagos .accordion-button:focus {
+            border-color: rgb(40, 167, 69);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.2);
+        }
+
+        .pagos .accordion-button[aria-expanded="true"] {
+            background-color: rgb(40, 167, 69, 0.2);
         }
     </style>
+
+    <!-- DEIXAR O CAMPO DO INPUT SEMPRE COM DUAS CASAS DECIMAIS -->
+    <script>
+        function forcarDuasCasasDecimais(input) {
+            input.value = parseFloat(input.value).toFixed(2);
+        }
+    </script>
 
 </head>
 
@@ -53,238 +96,207 @@ if (!isset($_SESSION['loggedAdmin'])) {
         </div>
         <hr>
         <br>
-        <div class="pendentes p-3">
-            <h2>Solicitações de orçamento aguardando validação:</h2>
-            <br>
 
-            <?php
+        <?php for ($status = 0; $status <= 2; $status++) { //LOOP PARA CADA TIPO DE PEDIDO DE ACORDO COM STATUS 
 
-            require_once 'model/M_connection.php';
-            $dbConn = new Connection();
-            $conn = $dbConn->connect();
+            switch ($status) {
+                case 0:
+                    $titulo = "Pedidos aguardado Orçamento:";
+                    $class = "pendentes";
+                    break;
+                case 1:
+                    $titulo = "Pedidos Orçados:";
+                    $class = "orcados";
+                    break;
+                case 2:
+                    $titulo = "Pedidos Pagos:";
+                    $class = "pagos";
+                    break;
+            }
+        ?>
 
-            require_once 'model/M_admin.php';
-            require_once 'model/M_pedido.php';
-            $admin = new Admin();
+            <div class="<?= $class ?> p-3 rounded">
+                <h2> <?= $titulo ?> </h2>
+                <br>
 
-            //ESTA É A FORMA DE CHAMAR UM MÉTODO ESTÁTICO
-            $pedidos = Pedido::getPedidos($conn, 0);
+                <?php
 
-            //LOOP DAS COTAÇÕES
-            if ($pedidos) {
+                //ESTA É A FORMA DE CHAMAR UM MÉTODO ESTÁTICO
+                $pedidos = Pedido::getPedidos($conn, $status);
 
-                foreach ($pedidos as $pedido) {
+                //LOOP DAS COTAÇÕES
+                if ($pedidos) { ?>
 
-                    $idPedido = $pedido->getId();
-                    $cliente = mb_strtoupper(aes_256("decrypt", ($pedido->getUser())->getName()), 'UTF-8');
-                    $cnpj_cpf = aes_256("decrypt", ($pedido->getUser())->getCnpj_cpf());
-                    $precoAuto = number_format($pedido->computarTotal($conn), 2, ',', '.');
-            ?>
+                    <div id="accordion-pedidos" class="accordion">
 
-                    <div id="pedido-<?= $idPedido ?>">
+                        <?php foreach ($pedidos as $pedido) {
 
-                        <div class="d-flex flex-row">
-                            <h3>Pedido # <?= $idPedido ?></h3>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#pedido-collapsible-<?= $idPedido ?>" aria-expanded="false" aria-controls="pedido-collapsible-<?= $idPedido ?>">
-                                Expandir
-                            </button>
-                        </div>
+                            $idPedido = $pedido->getId();
+                            $cliente = mb_strtoupper(aes_256("decrypt", ($pedido->getUser())->getName()), 'UTF-8');
+                            $cnpj_cpf = aes_256("decrypt", ($pedido->getUser())->getCnpj_cpf());
+                            $precoAuto = number_format($pedido->computarTotal($conn), 2, ',', '.');
 
-                        <div id="pedido-collapsible-<?= $idPedido ?>" class="collapse">
-                            <div class="pedido-info mb-3">
+                            $aux = strtotime($pedido->getDate());
+                            $dataSolic = date("d/m/Y", $aux);
 
-                                <p>Cliente: <?= $cliente ?><br>
-                                    CNPJ_CPF: <?= $cnpj_cpf ?><br><br>
-                                    Custo Automático: R$ <?= $precoAuto ?></p>
+                            if ($status == 0) {
+                                $custo_orcado = "";
+                                $comment = "";
+                                $disabled = "";
+                            } else {
+                                //$custo_orcado = (float)number_format($pedido->getCusto_Orcado(), 2, ",", ".");
+                                $custo_orcado = (float)$pedido->getCusto_Orcado();
+                                $comment = $pedido->getComment();
+                                $disabled = "disabled";
 
-                                <form action="control/C_aferirOrcamento.php" method="POST">
-                                    <div class="row">
-                                        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-                                            <div class="col-5 mb-2">
-                                                Custo Orçado: <input required class="form-control form-control-sm" type="number" name="custo_orcado" step="0.01" require>
-                                            </div>
-                                            <div class="form-group mb-2">
-                                                <label for="exampleFormControlTextarea1">Comentários Sobre Orçamento:</label>
-                                                <textarea required name="comment" class="form-control" rows="2"></textarea>
-                                            </div>
-                                            <div>
-                                                <input class="btn btn-success btn-sm" type="submit" name="submit" value="Aferir Orçamento">
+                                $aux = strtotime($pedido->getDateOrcamento());
+                                $dataOrc = date("d/m/Y", $aux);
+                            }
+
+                            
+                        ?>
+
+                            <div id="pedido-<?= $idPedido ?>" class="accordion-item">
+
+                                <h3 class="accordion-header" id="pedido-header-<?= $idPedido ?>">
+                                    <button class="accordion-button collapsed text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#pedido-collapsible-<?= $idPedido ?>" aria-expanded="false" aria-controls="pedido-collapsible-<?= $idPedido ?>">
+                                        <span> <b>PEDIDO #<?= $idPedido ?></b><br>
+                                            <small>
+                                                CNPJ_CPF: <?= $cnpj_cpf ?><br>
+                                                Data da Solicitação: <?= $dataSolic ?></small></span>
+                                    </button>
+                                </h3>
+
+                                <div id="pedido-collapsible-<?= $idPedido ?>" class="accordion-collapse collapse accordion-body py-3" data-bs-parent="#pedido-collapsible-<?= $idPedido ?>">
+                                    <div class="pedido-info mb-3">
+
+                                        <p>Cliente: <b><?= $cliente ?></b><br>
+                                            CNPJ_CPF: <b><?= $cnpj_cpf ?></b><br>
+                                            Data da Solicitação: <b><?= $dataSolic ?></b>
+                                        <p>
+
+                                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#produto-collapsible-<?= $idPedido ?>" aria-expanded="false" aria-controls="produto-collapsible-<?= $idPedido ?>">
+                                                Exibir Produtos
+                                            </button>
+
+                                        <div id="produto-collapsible-<?= $idPedido ?>" class="collapse mt-3">
+                                            <div id="produtos-<?= $pedido->getId() ?>">
+
+                                                <?php
+
+                                                //LOOP DOS PRODUTOS
+
+                                                $produtos = $pedido->getProdutos($conn);
+                                                //Aqui são PEDIDO_PRODUTOS... extensão de apenas PRODUTOS. (conferir M_product.php)
+
+                                                foreach ($produtos as $prod) {
+
+                                                    $peca = $prod->getTipoPeca();
+                                                    $tecido = mb_strtoupper($prod->getTecido(), 'UTF-8');
+                                                    $tamanho = $prod->getTamanho();
+                                                    $mod_t = $prod->getModTamanho();
+                                                    $cor = $prod->getCor();
+                                                    $costura = $prod->getCostura();
+                                                    $mod_c = $prod->getModCostura();
+                                                    $qtde = $prod->getQtdeProdutos();
+                                                    $base_cost = $prod->getBaseCost();
+                                                ?>
+                                                    <p><b><?= $peca ?></b><br>
+                                                        Tecido: <?= $tecido ?><br>
+                                                        Tamanho: <?= $tamanho ?> <small>(x<?= $mod_t ?>)</small><br>
+                                                        Cor: <?= $cor ?><br>
+                                                        Costura: <?= $costura ?> <small>(x<?= $mod_c ?>)</small><br>
+                                                        Quantidade: <?= $qtde ?><br>
+                                                        Preço Base: R$ <?= $base_cost ?>
+                                                    </p>
+
+                                                    <?php
+                                                    //LOOP DOS SERVIÇOS
+
+                                                    $servicos = $prod->getServicos($conn);
+                                                    while ($servico = $servicos->fetch_assoc()) {
+                                                    ?>
+                                                        <div id="prod-<?= $prod->getIdPedidoProduto() ?>-serv-<?= $servico['id'] ?>" class="ps-4 border-start border-secondary">
+                                                            <p><b>Serviço: <?= $servico['desc'] ?></b><br>
+                                                                Imagem: <?= $servico['image_url'] ?><br>
+                                                                Tamanho: <?= $servico['tamanho'] ?> (<?= $servico['desc_tamanho'] ?>) <br>
+                                                                Custo: R$ <?= $servico['preco'] ?> <br>
+                                                                Posição: <?= $servico['posicao'] ?> <br>
+                                                                Comentários: <?= $servico['comment'] ?>
+                                                            </p>
+                                                        </div>
+
+                                                    <?php } // FIM DO LOOP DOS SERVIÇOS 
+                                                    ?>
+
+                                                <?php } // FIM DO LOOP DOS PRODUTOS 
+                                                ?>
+
                                             </div>
                                         </div>
-                                    </div>
-                                    <input required type="text" name="id_pedido" value="<?= $idPedido ?>" hidden>
-                                </form>
 
-                            </div>
+                                        <hr>
+                                        <p>Custo Automático: R$ <?= $precoAuto ?></p>
 
-                            <div class="d-flex flex-row">
-                                <h3>Produtos</h3>
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#pedido-collapsible-<?= $idPedido ?>" aria-expanded="false" aria-controls="pedido-collapsible-<?= $idPedido ?>">
-                                    Expandir
-                                </button>
-                            </div>
+                                        <?php if ($status == 0) { ?>
+                                            <form action="control/C_aferirOrcamento.php" method="POST">
+                                            <?php } ?>
 
-                            <div id="produto-collapsible-<?= $idPedido ?>" class="collapse">
-                                <div id="produtos-<?= $pedido->getId() ?>">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                                                    <div class="col-5 mb-2">
+                                                        Custo Orçado:
+                                                        <div class="input-group input-group-sm">
+                                                            <span class="input-group-text" id="basic-addon1">R$</span>
+                                                            <input required <?=$disabled?> class="form-control" type="number" name="custo_orcado" step="0.01" min="0" onchange="forcarDuasCasasDecimais(this)" value="<?= $custo_orcado ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label for="exampleFormControlTextarea1">Comentários Sobre Orçamento:</label>
+                                                        <textarea required <?=$disabled?> name="comment" class="form-control"><?= $comment ?></textarea>
+                                                    </div>
 
-                                    <?php
+                                                    <?php if ($status == 0) { ?>
+                                                        <div>
+                                                            <input class="btn btn-success btn-sm" type="submit" name="submit" value="Aferir Orçamento">
+                                                        </div>
+                                                    <?php }else{ ?>
+                                                        Data do Orçamento: <b><?= $dataOrc ?></b>
+                                                    <?php } ?>
 
-                                    //LOOP DOS PRODUTOS
-
-                                    $produtos = $pedido->getProdutos($conn);
-                                    //Aqui são PEDIDO_PRODUTOS... extensão de apenas PRODUTOS. (conferir M_product.php)
-
-                                    foreach ($produtos as $prod) {
-
-                                        $peca = $prod->getTipoPeca();
-                                        $tecido = mb_strtoupper($prod->getTecido(), 'UTF-8');
-                                        $tamanho = $prod->getTamanho();
-                                        $mod_t = $prod->getModTamanho();
-                                        $cor = $prod->getCor();
-                                        $costura = $prod->getCostura();
-                                        $mod_c = $prod->getModCostura();
-                                        $qtde = $prod->getQtdeProdutos();
-                                        $base_cost = $prod->getBaseCost();
-                                    ?>
-                                        <p><b><?= $peca ?></b><br>
-                                            Tecido: <?= $tecido ?><br>
-                                            Tamanho: <?= $tamanho ?> <small>(x<?= $mod_t ?>)</small><br>
-                                            Cor: <?= $cor ?><br>
-                                            Costura: <?= $costura ?> <small>(x<?= $mod_c ?>)</small><br>
-                                            Quantidade: <?= $qtde ?><br>
-                                            Preço Base: R$ <?= $base_cost ?>
-                                        </p>
-
-                                        <?php
-                                        //LOOP DOS SERVIÇOS
-
-                                        $servicos = $prod->getServicos($conn);
-                                        while ($servico = $servicos->fetch_assoc()) {
-                                        ?>
-                                            <div id="prod-<?= $prod->getIdPedidoProduto() ?>-serv-<?= $servico['id'] ?>" style="margin-left:20px;">
-                                                <p><b>Serviço: <?= $servico['desc'] ?></b><br>
-                                                    Tamanho: <?= $servico['tamanho'] ?> (<?= $servico['desc_tamanho'] ?>) <br>
-                                                    Custo: R$ <?= $servico['preco'] ?> <br>
-                                                    Posição: <?= $servico['posicao'] ?> <br>
-                                                    Comentários: <?= $servico['comment'] ?>
-                                                </p>
+                                                </div>
                                             </div>
+                                            <?php if ($status == 0) { ?>
+                                                <input type="text" name="id_pedido" value="<?= $idPedido ?>" hidden>
+                                            </form>
+                                        <?php } ?>
 
-                                        <?php } // FIM DO LOOP DOS SERVIÇOS 
-                                        ?>
 
-                                    <?php } // FIM DO LOOP DOS PRODUTOS 
-                                    ?>
+                                    </div>
+
 
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <hr>
-
-            <?php } //FIM DO LOOP DAS COTAÇÕES 
-
-            } // FIM DA VERIFICACAO SE HÁ COTACOES
-            ?>
-        </div>
-
-        <div class="andamento">
-            <br>
-            <h2>Pedidos Orçados:</h2>
-            <br>
-
-            <?php
-            require_once 'model/M_connection.php';
-            $dbConn = new Connection();
-            $conn = $dbConn->connect();
-
-            require_once 'model/M_pedido.php';
-
-            //ESTA É A FORMA DE CHAMAR UM MÉTODO ESTÁTICO
-            $pedidos = Pedido::getPedidos($conn, 1);
-
-
-            //LOOP DAS COTAÇÕES
-            if ($pedidos) {
-
-                foreach ($pedidos as $pedido) {
-
-                    $idPedido = $pedido->getId();
-                    $cliente = mb_strtoupper(aes_256("decrypt", ($pedido->getUser())->getName()), 'UTF-8');
-                    $cnpj_cpf = aes_256("decrypt", ($pedido->getUser())->getCnpj_cpf());
-                    $precoAuto = number_format($pedido->computarTotal($conn), 2, ',', '.');
-            ?>
-
-                    <div class="cotacoes">
-                        <h3>Cotação # <?= $idPedido ?></h3>
-                        <p>Cliente: <?= $cliente ?><br>
-                            CNPJ_CPF: <?= $cnpj_cpf ?><br><br>
-                            Preço Automático: R$ <?= $precoAuto ?> <br>
-                            PREÇO ORÇADO: Cotação ainda não orçada.
-                        </p>
-                    </div>
-
-                    <div id="produtos-<?= $pedido->getId() ?>" style="margin-left:20px;">
-                        <h3>Produtos</h3>
-
-                        <?php
-
-                        //LOOP DOS PRODUTOS
-
-                        $produtos = $pedido->getProdutos($conn);
-                        //Aqui são PEDIDO_PRODUTOS... extensão de apenas PRODUTOS. (conferir M_product.php)
-
-                        foreach ($produtos as $prod) {
-
-                            $peca = $prod->getTipoPeca();
-                            $tecido = mb_strtoupper($prod->getTecido(), 'UTF-8');
-                            $tamanho = $prod->getTamanho();
-                            $mod_t = $prod->getModTamanho();
-                            $cor = $prod->getCor();
-                            $costura = $prod->getCostura();
-                            $mod_c = $prod->getModCostura();
-                            $qtde = $prod->getQtdeProdutos();
-                            $base_cost = $prod->getBaseCost();
-                        ?>
-                            <p><b><?= $peca ?></b><br>
-                                Tecido: <?= $tecido ?><br>
-                                Tamanho: <?= $tamanho ?> <small>(x<?= $mod_t ?>)</small><br>
-                                Cor: <?= $cor ?><br>
-                                Costura: <?= $costura ?> <small>(x<?= $mod_c ?>)</small><br>
-                                Quantidade: <?= $qtde ?><br>
-                                Preço Base: R$ <?= $base_cost ?>
-                            </p>
-
-                            <?php
-                            //LOOP DOS SERVIÇOS
-
-                            $servicos = $prod->getServicos($conn);
-                            while ($servico = $servicos->fetch_assoc()) {
-                            ?>
-                                <div id="prod-<?= $prod->getIdPedidoProduto() ?>-serv-<?= $servico['id'] ?>" style="margin-left:20px;">
-                                    <p><b>Serviço: <?= $servico['desc'] ?></b><br>
-                                        Tamanho: <?= $servico['tamanho'] ?> (<?= $servico['desc_tamanho'] ?>) <br>
-                                        Custo: R$ <?= $servico['preco'] ?> <br>
-                                        Posição: <?= $servico['posicao'] ?> <br>
-                                        Comentários: <?= $servico['comment'] ?>
-                                    </p>
-                                </div>
-
-                            <?php } // FIM DO LOOP DOS SERVIÇOS 
-                            ?>
-
-                        <?php } // FIM DO LOOP DOS PRODUTOS 
+                        <?php } //FIM DO LOOP DAS COTAÇÕES 
                         ?>
 
                     </div>
+                    <!--DIV DO ACCORDION DOS PEDIDOS.-->
 
+                <?php } else { ?>
+                    <h6>Não há pedidos nesta categoria.</h6>
 
-            <?php } //FIM DO LOOP DAS COTAÇÕES 
+                <?php } // FIM DA VERIFICACAO SE HÁ COTACOES 
+                ?>
 
-            } // FIM DA VERIFICACAO SE HÁ COTACOES
-            ?>
-        </div>
+            </div>
+
+            <hr>
+
+        <?php } //FIM DO LOOP DE DIFERENTES STATUS 
+        ?>
+
     </main>
     <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

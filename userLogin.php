@@ -37,6 +37,8 @@
                     <label>
                         <input type="checkbox" name="stayConnected" value="remember-me"> Manter conectado
                     </label>
+                    <br>
+                    <a href="userRegister.php">Cadastrar</a>
                 </div>
                 <input class="w-100 btn btn-lg btn-primary" type="submit" value="Entrar">
             </form>

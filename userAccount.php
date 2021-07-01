@@ -156,11 +156,11 @@ if ($ordersCheck->num_rows > 0) {
             <a href="index.php">Voltar</a>
             <br>
             <label for="name">Nome</label> <br>
-            <input type="text" name="name" class="form-control" value="<?= aes_256("decrypt", $user->getName()) ?>"><br>
+            <input required type="text" name="name" class="form-control" value="<?= aes_256("decrypt", $user->getName()) ?>"><br>
             <br>
 
             <label for="email">Email</label><br>
-            <input type="email" name="email" class="form-control" value="<?= aes_256("decrypt", $user->getEmail()) ?>"><br>
+            <input required type="email" name="email" class="form-control" value="<?= aes_256("decrypt", $user->getEmail()) ?>"><br>
             <br>
 
             <!-- <label for="password">Senha</label><br>
@@ -177,11 +177,11 @@ if ($ordersCheck->num_rows > 0) {
 
 
             <label for="cpf_cnpj">CNPJ_CPF</label><br>
-            <input type="text" name="cnpj_cpf" class="form-control" value="<?= aes_256("decrypt", $user->getCNPJ_CPF()) ?>" <?= ($temPedidoPago) ? "disabled" : "" ?>><br>
+            <input required type="text" name="cnpj_cpf" class="form-control" value="<?= aes_256("decrypt", $user->getCNPJ_CPF()) ?>" <?= ($temPedidoPago) ? "disabled" : "" ?>><br>
             <br>
 
             <label for="cep">CEP</label><br>
-            <input type="text" name="cep" class="form-control" value="<?= aes_256("decrypt", $user->getCEP()) ?>"><br>
+            <input required type="text" name="cep" class="form-control" value="<?= aes_256("decrypt", $user->getCEP()) ?>"><br>
             <br>
 
             <!-- <label for="address">Endereço</label><br>
@@ -189,11 +189,11 @@ if ($ordersCheck->num_rows > 0) {
             <br> -->
 
             <label for="number">Número</label><br>
-            <input type="text" name="number" class="form-control" value="<?= aes_256("decrypt", $user->getNumber()) ?>"><br>
+            <input required type="text" name="number" class="form-control" value="<?= aes_256("decrypt", $user->getNumber()) ?>"><br>
             <br>
 
             <label for="complement">Complemento</label><br>
-            <input type="text" name="complemento" class="form-control" value="<?= aes_256("decrypt", $user->getComplement()) ?>"><br>
+            <input required type="text" name="complemento" class="form-control" value="<?= aes_256("decrypt", $user->getComplement()) ?>"><br>
             <br>
 
             <!-- <label for="city">Cidade</label><br>
@@ -206,7 +206,7 @@ if ($ordersCheck->num_rows > 0) {
 
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" value="terms-accept" required> Declaro estar ciente dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
+                    <input required type="checkbox" value="terms-accept" required> Declaro estar ciente dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
                 </label>
             </div>
 

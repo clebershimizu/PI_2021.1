@@ -104,7 +104,7 @@
         <form action="control/C_registerUser" method="POST">
             <!-- como funciona isso? -->
 
-            <h1 class="h1 mb-3 fw-normal">Registre-se</h1>
+            <h1 class="h1 mb-3 fw-normal">Faça o seu Cadastro</h1>
             <a href="index.php">Voltar</a>
             <br>
             <label for="name">Nome</label> <br>

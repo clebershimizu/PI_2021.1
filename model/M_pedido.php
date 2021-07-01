@@ -8,7 +8,9 @@ class Pedido
     private $date;
     private $description = "Sem descricao";
     private $status;
+    private $date_orcamento;
     private $custo_orcado;
+    private $comment;
 
     function preencher($conn, $id)
     {
@@ -33,7 +35,9 @@ class Pedido
         $this->date = $pedido['date'];
         $this->description = $pedido['description'];
         $this->status = $pedido['status'];
+        $this->date_orcamento = $pedido['date_orcamento'];
         $this->custo_orcado = $pedido['custo_orcado'];
+        $this->comment = $pedido['comment'];
     }
 
     // =-=-= MÉTODOS ESTÁTICOS =-=-=
@@ -43,7 +47,7 @@ class Pedido
 
         //Pegar todos os pedidos, dependendo do status
 
-        $query = 'SELECT id FROM pedido WHERE status = ?';
+        $query = 'SELECT id FROM pedido WHERE status = ? order by date';
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $status);
         $stmt->execute();
@@ -130,7 +134,18 @@ class Pedido
         $this->status = $status;
     }
 
-    //STATUS
+    //DATE ORCAMENTO
+    function getDateOrcamento()
+    {
+        return $this->date_orcamento;
+    }
+
+    function setDateOrcamento($x)
+    {
+        $this->date_orcamento = $x;
+    }
+
+    //CUSTO ORCADO
     function getCusto_Orcado()
     {
         return $this->custo_orcado;
@@ -139,6 +154,17 @@ class Pedido
     function setCusto_Orcado($x)
     {
         $this->custo_orcado = $x;
+    }
+
+    //COMMENT
+    function getComment()
+    {
+        return $this->comment;
+    }
+
+    function setComment($x)
+    {
+        $this->comment = $x;
     }
 
 
@@ -288,12 +314,12 @@ class Pedido
             $stmt->execute();
         }
     }
-    function aferirOrcamento($conn, $comments)
+    function aferirOrcamento($conn)
     {
         $status = 1;
-        $query =    'UPDATE pedido SET custo_orcado = ?, comment = ?, status = ? WHERE id = ?';
+        $query =    'UPDATE pedido SET date_orcamento = ?, custo_orcado = ?, comment = ?, status = ? WHERE id = ?';
         $stmt = $conn->prepare($query);
-        @$stmt->bind_param("dsii", $this->getCusto_Orcado(), $comments, $status, $this->getId());
+        @$stmt->bind_param("sdsii", $this->getDateOrcamento(), $this->getCusto_Orcado(), $this->getComment(), $status, $this->getId());
         $stmt->execute();
     }
 }

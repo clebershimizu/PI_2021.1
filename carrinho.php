@@ -18,7 +18,7 @@ if (isset($_COOKIE['cart'])) {
 } else {
     $msg = "Você não possui produtos no carrinho! Comece pelo catálogo!";
     header("Location: catalogo.php?erro={$msg}");
-    //exit();
+    exit();
 }
 
 ?>

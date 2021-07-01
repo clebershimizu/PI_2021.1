@@ -129,14 +129,15 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
       <hr class="featurette-divider">
 
       <div class="row featurette">
-        <div class="col-md-4 order-md-1">
-          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="400" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <div class="col-xl-12 col-xxl-6 order-md-1 mb-4 d-flex justify-content-center">
+          <img src="img/sobre.png" alt="IMAGEM_SOBRE">
+          <!-- <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="400" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa" dy=".3em">400x400</text>
-          </svg>
+          </svg> -->
         </div>
-        <div class="col-md-8 order-md-2">
-          <h1 class="mt-4">Sobre Nós</h1>
+        <div class="col-xl-12 col-xxl-6 order-md-2">
+          <h1 class="">Sobre Nós</h1>
           <br>
           <p class="lead">A GMS atua na área de representação de moda desde 2008, criou sua própria linha em 2012, com
             foco na moda feminina.
@@ -169,32 +170,35 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
         <div class="row w-75 m-auto row-cols-1 row-cols-sm-2 row-cols-md-2 g-2">
           <div class="col">
             <div class="card shadow-sm h-100">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              
+              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <title>Placeholder</title>
                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-              </svg>
+              </svg> -->
+              <img src="img/uniformes_profissionais.png" alt="Uniformes Profissionais">
               <div class="card-body d-flex flex-column">
                 <h3 class="text-info py-2">Uniformes Profissionais</h3>
                 <p class="card-text">Confeccionamos uniformes conforme a necessidade de nossos clientes, estamos
                   preparados com uma linha completa para atender todos os tipos de segmentos empresariais.</p>
                 <div class="justify-content-between align-items-center mt-auto">
-                  <button type="button" class="btn btn-sm w-100 btn-info">Veja Mais</button>
+                  <a href="catalogo.php" class="btn btn-sm w-100 btn-info">Veja Mais</a>
                 </div>
               </div>
             </div>
           </div>
           <div class="col">
             <div class="card shadow-sm h-100">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <title>Placeholder</title>
                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-              </svg>
+              </svg> -->
+              <img src="img/uniformes_executivos.png" alt="Uniformes Executivos">
               <div class="card-body d-flex flex-column">
                 <h3 class="text-info py-2">Uniformes Executivos</h3>
                 <p class="card-text">Com uma linha refinada e atualizada desenvolvemos modelos exclusivos atendendo
                   todas as áreas de sua empresa, seja escritório, comercial ou executiva.</p>
                 <div class="justify-content-between align-items-center mt-auto">
-                  <button type="button" class="btn btn-sm w-100 btn-info">Veja Mais</button>
+                  <a href="catalogo.php" class="btn btn-sm w-100 btn-info">Veja Mais</a>
                 </div>
               </div>
             </div>

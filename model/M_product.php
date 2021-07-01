@@ -426,7 +426,8 @@ class Pedido_Produto extends Product
                                 stp.tamanho,
                                 stp.desc_tamanho,
                                 pos.descricao as posicao,
-                                pps.comment
+                                pps.comment,
+                                pps.image_url
                         FROM pedido_produto_servico as pps
                         JOIN servico_tamanho_preco stp  ON pps.fk_servico_id = stp.id
                         JOIN servico s                  ON s.id = stp.fk_servico_id
