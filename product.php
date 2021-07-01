@@ -3,7 +3,7 @@
 session_start();
 if (!isset($_SESSION['loggedUser'])) {
     $msg = "Você só pode adicionar um item ao carrinho se estiver logado";
-    header("Location: login.php?erro={$msg}");
+    header("Location: userLogin.php?erro={$msg}");
 }
 
 require_once 'model/M_connection.php';
@@ -163,13 +163,13 @@ $costuras = $conn->query("SELECT * FROM costura");
                     <!-- IMAGEM DO PRODUTO, AINDA NAO DINAMICO -->
 
                     <div class="w-50">
-                        <img src="img/<?=$produto['image_url']?>" alt="Imagem do produto" class="img-format">
+                        <img src="img/<?= $produto['image_url'] ?>" alt="Imagem do produto" class="img-format">
                     </div>
 
                     <!-- COR DO PRODUTO -->
                     <br>
                     <h4>Escolha a cor</h4>
-                    <select class="form-select" id="cor" name="cor">
+                    <select required class="form-select" id="cor" name="cor">
                         <option value="" selected disabled>Selecione</option>
 
                         <?php while ($cor = $cores->fetch_assoc()) { ?>
@@ -185,7 +185,7 @@ $costuras = $conn->query("SELECT * FROM costura");
 
                     <?php while ($tamanho = $tamanhos->fetch_assoc()) { ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="<?= $tamanho['id'] ?>" name="tamanho">
+                            <input required class="form-check-input" type="radio" value="<?= $tamanho['id'] ?>" name="tamanho">
                             <label class="form-check-label"><?= $tamanho['desc'] ?></label>
                         </div>
                     <?php } ?>
@@ -196,7 +196,7 @@ $costuras = $conn->query("SELECT * FROM costura");
 
                     <h4>Selecione o tipo de costura</h4>
                     <div class="costura">
-                        <select class="form-select" aria-label="costura" id="costura" name="costura">
+                        <select required class="form-select" aria-label="costura" id="costura" name="costura">
                             <option value="" selected disabled>Selecione</option>
 
                             <?php while ($costura = $costuras->fetch_assoc()) { ?>
@@ -210,7 +210,7 @@ $costuras = $conn->query("SELECT * FROM costura");
                     <!-- QUANTIDADE DO PRODUTO -->
 
                     <h4>Informe a quantidade desejada</h4>
-                    <input type="number" class="form-control" name="quantidade">
+                    <input required type="number" class="form-control" name="quantidade">
 
                     <br>
                     <hr>
@@ -332,6 +332,8 @@ $costuras = $conn->query("SELECT * FROM costura");
         }
     </script>
     <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 

@@ -28,12 +28,12 @@ $prod->preencherProduto($conn, $id);
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="estilo.css" />
     <title>ADMIN - Cadastro de produtos</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <!-- CSS para ícones -->
     <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
-    
+
     <style>
         .logo {
             padding: 2rem 0 2rem 0;
@@ -110,7 +110,7 @@ $prod->preencherProduto($conn, $id);
         <h1>Editar Produto</h1>
         <hr>
 
-        <form action="control/C_updateProduct.php?id=<?=$id?>" method="POST">
+        <form action="control/C_updateProduct.php?id=<?= $id ?>" method="POST">
             <div class="col-10 col-xs-10 col-sm-8 col-md-7 col-lg-7 col-xl-6">
                 <label for="description">Descrição</label> <br>
                 <input type="text" name="description" class="form-control" value="<?= $prod->getTipoPeca() ?>">
@@ -198,6 +198,8 @@ $prod->preencherProduto($conn, $id);
         </form>
     </main>
 
+    <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

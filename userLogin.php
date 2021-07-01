@@ -25,11 +25,11 @@
                 <a href="index.php">Voltar</a>
 
                 <div class="form-floating">
-                    <input type="email" name="userEmail" class="form-control" id="floatingInput" placeholder="nome@examplo.com">
+                    <input required type="email" name="userEmail" class="form-control" id="floatingInput" placeholder="nome@examplo.com">
                     <label for="floatingInput">Email</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" name="userPassword" class="form-control" id="floatingPassword" placeholder="Senha">
+                    <input required type="password" name="userPassword" class="form-control" id="floatingPassword" placeholder="Senha">
                     <label for="floatingPassword">Senha</label>
                 </div>
 
@@ -42,7 +42,9 @@
             </form>
         </div>
     </main>
-    <?php include "view/footer.php"; ?>
+
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

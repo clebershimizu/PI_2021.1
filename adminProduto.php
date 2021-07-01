@@ -16,12 +16,12 @@ if (!isset($_SESSION['loggedAdmin'])) {
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="estilo.css" />
     <title>ADMIN - Cadastro de produtos</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <!-- CSS para ícones -->
     <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
-    
+
     <style>
         .logo {
             padding: 2rem 0 2rem 0;
@@ -51,7 +51,7 @@ if (!isset($_SESSION['loggedAdmin'])) {
             newPositionCb.name = "pos[]"
             newPositionCb.id = "c-p-" + count
             newPositionCb.value = "p-" + count
-            newPositionCb.checked= "checked"
+            newPositionCb.checked = "checked"
             newPositionCb.hidden = true
             d.getElementById('checkbox_hidden').appendChild(newPositionCb)
 
@@ -119,7 +119,7 @@ if (!isset($_SESSION['loggedAdmin'])) {
                     <td id="<?= $id ?>-base_cost"><?= $cost ?></td>
                     <td id="<?= $id ?>-image_url"><?= $url ?></td>
                     <td id="<?= $id ?>-posicoes" class="pe-3">
-                        <select id="select" class="form-select form-select-sm">
+                        <select required id="select" class="form-select form-select-sm">
                             <option value="" selected disabled>Visualizar</option>
                             <?php
                             $posicoes = $prod->getPosicoes($conn);
@@ -149,16 +149,16 @@ if (!isset($_SESSION['loggedAdmin'])) {
                 <h2 class="h2 mb-3 fw-normal">Cadastrar Novo Produto</h2>
 
                 <label for="description">Descrição</label> <br>
-                <input type="text" name="description" class="form-control">
+                <input required type="text" name="description" class="form-control">
                 <br>
                 <label for="tecido">Tecido</label> <br>
-                <input type="text" name="tecido" class="form-control">
+                <input required type="text" name="tecido" class="form-control">
                 <br>
                 <label for="base_cost">Custo Base</label> <br>
-                <input type="number" name="base_cost" class="form-control">
+                <input required type="number" name="base_cost" class="form-control">
                 <br>
                 <label for="picture">Imagem</label> <br>
-                <input type="text" name="picture" class="form-control">
+                <input required type="text" name="picture" class="form-control">
                 <br>
 
                 <div id="posicoes">
@@ -167,13 +167,13 @@ if (!isset($_SESSION['loggedAdmin'])) {
                     <h3 class="h3 mb-3 fw-normal">Posições para Serviços</h3>
 
                     <!-- INPUTS DE POSICOES: 1º FICA FORA DA DIV PARA NAO SER AFETADO PELO JAVASCRIPT -->
-                    <input type="text" class="form-control mb-2" id="i-p-1" name="p-1" placeholder="Ex: Manga Direita" required>
+                    <input required type="text" class="form-control mb-2" id="i-p-1" name="p-1" placeholder="Ex: Manga Direita" required>
                     <div id="campos_posicoes">
 
                     </div>
 
                     <!-- ARRAY DE CHECKBOX ESCONDIDOS, QUE CARREGA O NAME DE TODOS OS INPUTS DINAMICOS EM SEUS VALUES: O PRIMEIRO FICA FORA PQ É OBRIGATORIO -->
-                    <input type="checkbox" name="pos[]" id="c-p-1" value="p-1" checked="checked" hidden >
+                    <input type="checkbox" name="pos[]" id="c-p-1" value="p-1" checked="checked" hidden>
                     <div id="checkbox_hidden" hidden>
 
                     </div>
@@ -196,6 +196,8 @@ if (!isset($_SESSION['loggedAdmin'])) {
         </form>
     </main>
 
+    <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

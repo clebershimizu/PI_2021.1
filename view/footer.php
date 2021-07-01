@@ -1,4 +1,4 @@
-    <footer class="container-fluid bg-info text-white pt-3">
+    <footer class="container-fluid footer bg-info text-white pt-3" style="clear:auto">
       <div class="container text-center" style="width: 40%;">
         <div class="row py-3 m-auto row-cols-2 row-cols-sm-2 row-cols-md-4 g-4 ">
           <div class="col mt-0">

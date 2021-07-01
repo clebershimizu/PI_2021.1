@@ -17,7 +17,7 @@ if (isset($_COOKIE['cart'])) {
     //var_dump($cart);
 } else {
     $msg = "Você não possui produtos no carrinho! Comece pelo catálogo!";
-    //header("Location: login.php?erro={$msg}");
+    header("Location: catalogo.php?erro={$msg}");
     //exit();
 }
 
@@ -211,6 +211,8 @@ if (isset($_COOKIE['cart'])) {
     </main>
 
     <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

@@ -32,16 +32,19 @@
 
         <form action="control/C_loginAdmin.php" method="POST">
             <label for="username">Nome de Usuário</label><br>
-            <input type="text" name="username"><br>
+            <input required type="text" name="username"><br>
             <br>
 
             <label for="userPassword">Senha</label><br>
-            <input type="password" name="adminPassword"><br>
+            <input required type="password" name="adminPassword"><br>
             <br>
             <input type="submit" value="ENVIAR" />
         </form>
 
     </div>
+
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

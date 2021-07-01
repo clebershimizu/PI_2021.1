@@ -5,13 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:300i,400,700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="lib/privacy.css">
+  <!-- Bootstrap core CSS -->
+  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <title>GMS- Política de privacidade</title>
+
+  <style>
+    p {
+      font-size: 16px;
+      text-align: justify;
+    }
+  </style>
 
 
 </head>
@@ -19,15 +24,8 @@
 <body>
   <?php include "view/header.php"; ?>
 
-  <div id="head">
-  </div>
-  <div class="logo">
-    <img src="img/gmsLogo.jpeg" alt="gms Logo" width=100>
-  </div>
-
-
   <div class="container">
-    <h2>GMS - Política de privacidade</h2>
+    <h2 class="py-5">GMS - Política de privacidade</h2>
 
     <nav>
       <h3 id="contents">Conteúdo</h3>
@@ -203,6 +201,10 @@
       <nav class="to-top"><a href="#contents">Volta para o topo</a></nav>
     </article>
   </div>
+  <br>
+  <?php include "view/footer.php"; ?>
+  <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

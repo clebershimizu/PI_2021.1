@@ -108,55 +108,55 @@
             <a href="index.php">Voltar</a>
             <br>
             <label for="name">Nome</label> <br>
-            <input type="text" name="name" class="form-control"><br>
+            <input required type="text" name="name" class="form-control"><br>
             <br>
 
             <label for="email">Email</label><br>
-            <input type="email" name="email" class="form-control"><br>
+            <input required type="email" name="email" class="form-control"><br>
             <br>
 
             <label for="password">Senha</label><br>
-            <input type="password" name="password" onkeyup="passwordStrength(this.value)" maxlength="30" minlength="8" class="form-control">
+            <input required type="password" name="password" onkeyup="passwordStrength(this.value)" maxlength="30" minlength="8" class="form-control">
             <span class="small">No mímino 8 caracteres. Procure usar maiúsculas, minúsculas, números e símbolos.</span>
             <br>
             <div id="passwordDescription">Nenhuma senha digitada</div>
             <div id="passwordStrength" class="strength0"></div><br>
 
             <label for="password-confirm">Repita a senha</label><br>
-            <input type="password" name="password-confirm" onkeyup="passwordMatch(this.value)" maxlength="30" minlength="8" class="form-control"><br>
+            <input required type="password" name="password-confirm" onkeyup="passwordMatch(this.value)" maxlength="30" minlength="8" class="form-control"><br>
             <br>
 
             <label for="cpf_cnpj">CNPJ_CPF</label><br>
-            <input type="text" name="cnpj_cpf" class="form-control"><br>
+            <input required type="text" name="cnpj_cpf" class="form-control"><br>
             <br>
 
             <label for="cep">CEP</label><br>
-            <input type="text" name="cep" class="form-control"><br>
+            <input required type="text" name="cep" class="form-control"><br>
             <br>
 
             <label for="address">Endereço</label><br>
-            <input type="text" name="address" class="form-control"><br>
+            <input required type="text" name="address" class="form-control"><br>
             <br>
 
             <label for="number">Número</label><br>
-            <input type="text" name="number" class="form-control"><br>
+            <input required type="text" name="number" class="form-control"><br>
             <br>
 
             <label for="complement">Complemento</label><br>
-            <input type="text" name="complemento" class="form-control"><br>
+            <input required type="text" name="complemento" class="form-control"><br>
             <br>
 
             <label for="city">Cidade</label><br>
-            <input type="text" name="city" class="form-control"><br>
+            <input required type="text" name="city" class="form-control"><br>
             <br>
 
             <label for="state">Estado</label><br>
-            <input type="text" name="state" class="form-control"><br>
+            <input required type="text" name="state" class="form-control"><br>
             <br>
 
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
+                    <input required type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
                 </label>
             </div>
 
@@ -189,7 +189,9 @@
             document.getElementById("passwordStrength").className = "strength" + score;
         }
     </script>
-<?php include "view/footer.php"; ?>
+    <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 

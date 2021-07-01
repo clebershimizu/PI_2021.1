@@ -51,8 +51,9 @@ if ($ordersCheck->num_rows > 0) {
     <title>Conta</title>
     <script>
         var d = document
+
         function confirmDeletion() {
-            if(window.confirm("Tem certeza que deseja deletar a sua conta?")) {
+            if (window.confirm("Tem certeza que deseja deletar a sua conta?")) {
                 d.getElementById('accDelete').submit()
             }
         }
@@ -212,7 +213,7 @@ if ($ordersCheck->num_rows > 0) {
             <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Atualizar cadastro</button> -->
             <input class="w-100 btn btn-lg btn-primary" type="submit" value="Atualizar cadastro">
             <hr>
-            
+
         </form>
         <form id="accDelete" name="accDelete" action="control/C_deleteUserData.php" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar sua conta?');">
             <input type="submit" class="w-100 btn btn-lg btn-primary" value="Deletar Conta">
@@ -244,7 +245,9 @@ if ($ordersCheck->num_rows > 0) {
             document.getElementById("passwordStrength").className = "strength" + score;
         }
     </script>
-<?php include "view/footer.php"; ?>
+    <?php include "view/footer.php"; ?>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 
