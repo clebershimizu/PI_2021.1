@@ -101,7 +101,7 @@
     <?php include "view/header.php" ?>
     <!-- </div> -->
     <div class="form-signin">
-        <form action="control/C_registerUser" method="POST">
+        <form action="control/C_registerUser" method="POST" onsubmit="return checkPassword(this)">
             <!-- como funciona isso? -->
 
             <h1 class="h1 mb-3 fw-normal">Faça o seu Cadastro</h1>
@@ -188,6 +188,32 @@
             document.getElementById("passwordDescription").innerHTML = desc[score];
             document.getElementById("passwordStrength").className = "strength" + score;
         }
+
+                    // Function to check Whether both passwords
+            // is same or not.
+            function checkPassword(form) {
+                password1 = form.password.value;
+                password2 = form.password-confirm.value;
+  
+                // If password not entered
+                if (password1 == '')
+                    alert ("Por favor, digite uma senha!");
+                      
+                // If confirm password not entered
+                else if (password2 == '')
+                    alert ("Por favor, confirme sua senha!");
+                      
+                // If Not same return False.    
+                else if (password1 != password2) {
+                    alert ("\nAs senhas não são iguais!")
+                    return false;
+                }
+  
+                // If same return True.
+                else{
+                    return true;
+                }
+            }
     </script>
     <?php include "view/footer.php"; ?>
     <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

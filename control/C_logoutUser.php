@@ -11,7 +11,9 @@ if (isset($_SESSION["loggedAdmin"])) {
     unset($_SESSION["idAdmin"]);
 }
 
-setcookie("id", $user["id"], time(), "/");
+setcookie("id", "", time(), "/");
+setcookie('cart', "", time(), "/");
+setcookie('aceite', "", time(), "/");
 
 session_destroy();
 header("Location: ../index.php");
