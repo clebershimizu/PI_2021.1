@@ -9,10 +9,13 @@
   <!-- Bootstrap core CSS -->
   <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- CSS para ícones -->
+  <link href="lib/open-iconic/font/css/open-iconic.css" rel="stylesheet">
+
   <title>GMS- Política de privacidade</title>
 
   <style>
-    p {
+    main p {
       font-size: 16px;
       text-align: justify;
     }
@@ -24,7 +27,7 @@
 <body>
   <?php include "view/header.php"; ?>
 
-  <div class="container">
+  <main class="container">
     <h2 class="py-5">GMS - Política de privacidade</h2>
 
     <nav>
@@ -200,8 +203,9 @@
 
       <nav class="to-top"><a href="#contents">Volta para o topo</a></nav>
     </article>
-  </div>
+  </main>
   <br>
+
   <?php include "view/footer.php"; ?>
   <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
