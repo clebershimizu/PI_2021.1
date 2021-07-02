@@ -300,16 +300,16 @@ if ((isset($_COOKIE['id'])) && (!isset($_SESSION["loggedUser"]))) {
         <div class="d-flex flex-row">
           <div>
             Usamos cookies neste site para distingui-lo de outros usuários.
-            Usamos esses dados para aprimorar sua experiência e para publicidade direcionada.
+            Usamos esses dados para aprimorar sua experiência, permitindo, por exemplo, a efetuação de um pedido em nosso sistema.
             &nbsp; Ao continuar a usar este site, você concorda com o uso de cookies.
-            &nbsp; Para obter mais informações, consulte nossa &nbsp;
+            <br>Para obter mais informações, consulte nossa &nbsp;
             <a href="privacy.php" target="_blank">Política de Privacidade</a>.
           </div>
           <div class="d-flex flex-column align-items-stretch ms-2 ">
             <button id="btn-cookie-close" type="button" class="btn-close align-self-end mb-2" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true"></span>
             </button>
-            <button id="btn-cookie-accept" type="button" class="btn btn-sm btn-info mt-auto">Aceitar</button>
+            <button id="btn-cookie-accept" type="button" class="btn btn-sm btn-info mt-auto">Entendi</button>
           </div>
         </div>
       </div>
