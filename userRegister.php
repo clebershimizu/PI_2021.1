@@ -156,7 +156,7 @@
 
             <div class="checkbox mb-3">
                 <label>
-                    <input required type="checkbox" value="terms-accept"> Declaro estar cientes dos <a href="privacy.html">Termos de privacidade</a> e concordar com o uso dos meus dados.
+                    <input required type="checkbox" value="terms-accept"> Declaro estar ciente dos <a href="privacy.php">Termos de privacidade</a> e concordar com o uso dos meus dados.
                 </label>
             </div>
 
