@@ -79,12 +79,15 @@ if (isset($_SESSION["loggedAdmin"])) {
               <li class="nav-item ">
                 <a class="nav-link" href="userAccount.php">Bem Vindo(a), <?= $loggedUserName ?></a>
               </li>
+              <li class="nav-item ">
+                <a class="nav-link" href="userOrders.php">Meus Pedidos</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="carrinho.php"><span style="font-size:20pt" alt="carrinho" class="oi" data-glyph="cart"></span></a>
               </li>
             <?php } else { ?>
               <li class="nav-item">
-                <a class="nav-link" href="#">Bem Vindo(a), <?= "Administrador" ?></a>
+                <a class="nav-link" href="#">Bem Vindo(a), Administrador</a>
               </li>
             <?php } ?>
             <li class="nav-item">

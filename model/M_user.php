@@ -137,6 +137,39 @@ class User
 
     //DEMAIS MÉTODOS DO USUÁRIO
 
+    public function getPedidos($conn, $status)
+    {
+
+        //Pegar todos os pedidos, dependendo do status
+
+
+        $query = 'SELECT id FROM pedido WHERE status = ? AND fk_user_id = ? order by date desc';
+        $stmt = $conn->prepare($query);
+        @$stmt->bind_param("ii", $status, $this->getId());
+        $stmt->execute();
+        $ids = $stmt->get_result();
+
+        if ($ids->num_rows > 0) {
+
+            // PARA CADA PEDIDO NÃO ORÇADO:
+            // 1. Construir um Objeto de Pedido
+            // 2. Preencher este Objeto com infos de um ID já existente;
+            // 3. Anexar em Array, que será retornado
+
+            $array = [];
+
+            while ($id = $ids->fetch_assoc()) {
+                $pedido = new Pedido();
+                $pedido->preencher($conn, $id['id']);
+                array_push($array, $pedido);
+            }
+
+            return $array;
+        } else {
+            return 0;
+        }
+    }
+
     //CADASTRO DE USUÁRIO
     function registerUser($conn)
     {
