@@ -151,11 +151,11 @@ class User
             }
         }
 
-        $query = "INSERT INTO user (name, email, user_password, cnpj_cpf, cep, house_number, complement)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-
+        $query = "INSERT INTO user (name, email, user_password, cnpj_cpf, cep, house_number, complement, available)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        @$stmt->bind_param("sssssss", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement());
+        $available = 1;
+        @$stmt->bind_param("sssssssi", $this->getName(), $this->getEmail(), $this->getPassword(), $this->getCNPJ_CPF(), $this->getCEP(), $this->getNumber(), $this->getComplement(), $available);
         $stmt->execute();
 
         return 1;
@@ -203,6 +203,7 @@ class User
         @$stmt->bind_param("i", $this->getId());
         $stmt->execute();
     }
+    
     function haveOrders($conn)
     {
         $query =    "SELECT * FROM pedido WHERE fk_user_id = ? AND status > 1";
