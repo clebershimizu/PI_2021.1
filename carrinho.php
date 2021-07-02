@@ -72,10 +72,13 @@ if (isset($_COOKIE['cart'])) {
 
         <br>
         <h2>Produtos adicionados</h2>
-        <br>
+        
+        <a class="btn btn-secondary btn-sm" href="control/C_limparCarrinho.php"><small>Limpar Carrinho</small></a>
+
+
 
         <!--ROW = CONTAINER DE COLUNAS... AQUI DENTRO ELAS SE AJEITAM SOZINHAS, SEGUNDO OS PARAMETROS DE TELA (rows-cols-screensize-qtde por linha)-->
-        <div class="row m-auto row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xxl-3">
+        <div class="row m-auto row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xxl-3 mt-4">
 
             <!--LOOP EM PHP-->
             <?php
